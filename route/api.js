@@ -16,6 +16,14 @@ const router = express.Router();
 const urlencodedparser = bodyparser.urlencoded({extended: false});
 
 //  Handle the different routes
+router.get('/', (req, res) => {
+    let data = {
+        title: 'Lab Management System | API Doc',
+    };
+
+    res.render("index", data)
+});
+
 router.get('/test', (req, res) => {
     res.json({message: 'Derpy is best pone'});
 });
