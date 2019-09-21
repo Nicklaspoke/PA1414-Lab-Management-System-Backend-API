@@ -14,7 +14,8 @@ const apiRouter = require('./route/api.js');
 const port = setup.port;
 const server = express();
 
-//  Set up router, middleware and start the server
+//  Set up and start the server
+server.set('view engine', 'ejs');
 server.use('/', apiRouter);
 server.listen(port, () => {
     console.log(`Server listening at ${port}`);
