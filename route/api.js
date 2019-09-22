@@ -32,15 +32,23 @@ router.get('/test', (req, res) => {
  * Handles the creation of a new user in the system
  * @param urlencodedparser - Object containing form data.
  */
-router.post('/registrer/user/student', urlencodedparser, async (req, res) => {
+router.post('/registrer/student', urlencodedparser, async (req, res) => {
     const message = await apiSql.registerNewStudent(
         req.body.schoolId,
         req.body.email,
         req.body.password,
-        'student'
     );
-    console.log(message);
+
     res.json({message: message});
+});
+
+router.post('/login', urlencodedparser, async (req, res) => {
+    const data = await apiSql.login(
+        req.body.schoolId,
+        req.body.password
+    );
+
+    res.json(data);
 });
 
 module.exports = router;
