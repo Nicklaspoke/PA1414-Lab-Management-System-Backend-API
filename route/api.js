@@ -37,13 +37,9 @@ router.get('/test', (req, res) => {
  * @param [urlencodedparser] - Object containing form data.
  */
 router.post('/registrer/student', urlencodedparser, async (req, res) => {
-    const message = await apiSql.registerNewStudent(
-        req.body.schoolId,
-        req.body.email,
-        req.body.password,
-    );
+    const message = await apiSql.registerNewStudent(req.body);
 
-    res.json({message: message});
+    res.json(message);
 });
 
 /**
@@ -53,8 +49,10 @@ router.post('/registrer/student', urlencodedparser, async (req, res) => {
  *
  * @param {urlencodedparser} urlencodedparser - Object containing form data
  */
-router.post('/register/user', urlencodedparser, async (req, res) => {
-    const message = await apiSql.
+router.post('/registrer/user', urlencodedparser, async (req, res) => {
+    const message = await apiSql.registerNewUser(req.body);
+
+    res.json(message);
 });
 
 router.post('/login', urlencodedparser, async (req, res) => {

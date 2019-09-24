@@ -32,31 +32,37 @@ const rack = hat.rack();
 /**
  * Register a new user to the database
  *
- * @param {string}  schoolId        - The users BTH school Akronym/id.
- * @param {string}  email           - The users email address.
- * @param {string}  password        - The users selected password.
+ * @param {urlencodedparser} formData - Object containing form data
+ *
+ * @return {JSON} - With a responce about the account creation
  *
  */
-async function registerNewStudent(schoolId, email, password) {
-    const saltRounds = 10;
-    //  Create salt and unique api-key
+async function registerNewStudent(formData) {
+    //  Create unique api-key
     const apiKey = rack();
-    const salt = await bcrypt.genSalt(saltRounds);
 
-
-    //  Hash the password
-    const hash = await bcrypt.hash(password, salt);
-
-    //  Set the role id
-    const role = 4;
+    pwd = await genPassword(password);
 
     //  Send the data to the database for storing
     sql = `CALL register_new_user(?, ?, ?, ?, ?, ?)`;
-    res = await db.query(sql, [schoolId, email, role, hash, salt, apiKey]);
+    res = await db.query(sql,
+        [
+            formData.schoolId,
+            formData.email,
+            4,
+            pwd.hash,
+            pwd.salt,
+            apiKey,
+        ]
+    );
 
     if (res.length != undefined) {
         for (const row of res[0]) {
-            return row.message;
+            return {
+                'data': {
+                    'message': row.message,
+                }
+            };
         }
     }
 }
@@ -69,10 +75,55 @@ async function registerNewStudent(schoolId, email, password) {
  *
  * @async
  *
- * @param {urlencodedparser} formData - Object containing form data
+ * @param {urlencodedparser} form - Object containing form data
+ *
+ * @return {JSON} - with message about account creation
  */
-async function registerNewUser(formData) {
+async function registerNewUser(form) {
+    const confromation = await validateRequest(form.userId, form.userKey, 1);
 
+    if (!confromation) {
+        return {
+            'data': {
+                'type': 'failure',
+                'message': 'You don\'t have the proivileges to perform this task',
+            },
+        };
+    }
+
+    const apiKey = rack();
+
+    pwd = await genPassword(form.password);
+
+    sql = `CALL register_new_user(?, ?, ?, ?, ?, ?)`;
+
+    res = await db.query(sql,
+        [
+            form.schoolId,
+            form.email,
+            form.role,
+            pwd.hash,
+            pwd.salt,
+            apiKey,
+        ]
+    );
+
+    if (res.length != undefined) {
+        for (const row of res[0]) {
+            return {
+                'data': {
+                    'message': row.message,
+                },
+            };
+        }
+    }
+
+    return {
+        'data': {
+            'type': 'success',
+            'message': 'Account created successfully',
+        },
+    };
 }
 
 /**
@@ -82,6 +133,8 @@ async function registerNewUser(formData) {
  *
  * @param {string} schoolId
  * @param {string} password
+ *
+ * @return {JSON} - With a login responce
  */
 async function login(schoolId, password) {
     let hashedPwd = '';
@@ -113,7 +166,63 @@ async function login(schoolId, password) {
     }
 }
 
+//  Functions not included in the export
+
+/**
+ *Generates a new password and salt for a user
+ *
+ * @async
+ *
+ * @param {string} password - the users choosen password
+ *
+ * @return {JSON} - With the hashed password and the salt
+ */
+async function genPassword(password) {
+    const saltRounds = 10;
+
+    //  Generate the salt
+    const salt = await bcrypt.genSalt(saltRounds);
+
+    //  Hash the password
+    const hash = await bcrypt.hash(password, salt);
+
+    return {
+        hash: hash,
+        salt: salt,
+    };
+}
+
+/**
+ * Validates a users request against the database
+ *
+ * @param {string} userId - the user id of the user to validate
+ * @param {string} key - the apiKey for the user you want to validate
+ * @param {int} role - The role the user needs to get their request validated
+ *
+ * @return {boolean} - With the responce if the validation is ok
+ */
+async function validateRequest(userId, key, role) {
+    let validationInfo;
+
+    sql = 'CALL get_validation_info(?)';
+
+    res = await db.query(sql, userId);
+
+    for (const row of res [0]) {
+        validationInfo = {
+            key: row.key,
+            role: row.role,
+        };
+    }
+
+    if (key === validationInfo.key && role === validationInfo.role) {
+        return true;
+    }
+    return false;
+}
+
 module.exports = {
-    registerNewStudent: registerNewStudent,
     login: login,
+    registerNewStudent: registerNewStudent,
+    registerNewUser: registerNewUser,
 };
