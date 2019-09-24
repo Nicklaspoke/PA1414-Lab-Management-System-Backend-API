@@ -12,6 +12,7 @@ const apiSql = require('../src/apiSql.js');
 const bodyparser = require('body-parser');
 
 //  Define router and urlencodedparser
+// eslint-disable-next-line new-cap
 const router = express.Router();
 const urlencodedparser = bodyparser.urlencoded({extended: false});
 
@@ -21,16 +22,19 @@ router.get('/', (req, res) => {
         title: 'Lab Management System | API Doc',
     };
 
-    res.render('index', data)
+    res.render('index', data);
 });
 
+/**
+ * Debug, removme before release
+ */
 router.get('/test', (req, res) => {
     res.json({message: 'Derpy is best pone'});
 });
 
 /**
- * Handles the creation of a new user in the system
- * @param urlencodedparser - Object containing form data.
+ * Handles the creation of a new student in the system
+ * @param [urlencodedparser] - Object containing form data.
  */
 router.post('/registrer/student', urlencodedparser, async (req, res) => {
     const message = await apiSql.registerNewStudent(
@@ -40,6 +44,17 @@ router.post('/registrer/student', urlencodedparser, async (req, res) => {
     );
 
     res.json({message: message});
+});
+
+/**
+ * Creates a user based on a form from the admin. Will need a key that as admin access
+ *
+ * @async
+ *
+ * @param {urlencodedparser} urlencodedparser - Object containing form data
+ */
+router.post('/register/user', urlencodedparser, async (req, res) => {
+    const message = await apiSql.
 });
 
 router.post('/login', urlencodedparser, async (req, res) => {

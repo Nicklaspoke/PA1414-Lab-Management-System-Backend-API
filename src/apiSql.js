@@ -8,12 +8,12 @@
 const mysql = require('promise-mysql');
 const dbConfig = require('../config/db/login.json');
 const hat = require('hat');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 let db;
 let sql;
 let res;
-let rack = hat.rack();
+const rack = hat.rack();
 
 /**
  * Main function to make the connection to the database
@@ -27,7 +27,7 @@ let rack = hat.rack();
     process.on('exit', () => {
         db.end();
     });
-}) ();
+})();
 
 /**
  * Register a new user to the database
@@ -48,7 +48,7 @@ async function registerNewStudent(schoolId, email, password) {
     const hash = await bcrypt.hash(password, salt);
 
     //  Set the role id
-    const role = 'Avaiting aproval';
+    const role = 4;
 
     //  Send the data to the database for storing
     sql = `CALL register_new_user(?, ?, ?, ?, ?, ?)`;
@@ -59,6 +59,20 @@ async function registerNewStudent(schoolId, email, password) {
             return row.message;
         }
     }
+}
+
+/**
+ * Admin version of regsterNewStudent
+ * Admin can define wich role a person will get.
+ * Will need verification against the database so the sender has the right
+ * access rights
+ *
+ * @async
+ *
+ * @param {urlencodedparser} formData - Object containing form data
+ */
+async function registerNewUser(formData) {
+
 }
 
 /**
@@ -86,7 +100,7 @@ async function login(schoolId, password) {
     for (const row of res[0]) {
         hashedPwd = row.hashedPwd;
         apiKey = row.apiKey;
-        currentRole = row.currentRole;
+        currentRole = row.role;
     }
     //  Compare passwords
     if (await bcrypt.compare(password, hashedPwd)) {
