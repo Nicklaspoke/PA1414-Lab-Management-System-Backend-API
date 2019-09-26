@@ -19,7 +19,7 @@ const config = require('../config/config.json');
  * @return {JSON} - With a login responce
  */
 async function login(formData) {
-    const res = await dbComms.getLoginDetails(formData.schoolId);
+    const res = await dbComms.getLoginDetails(formData.userId);
 
     if (res[0] === undefined) {
         return {
@@ -31,9 +31,21 @@ async function login(formData) {
         };
     }
     const hashedPwd = res[0].hashedPwd;
+    const roleId = res[0].role;
 
     if (await bcrypt.compare(formData.password, hashedPwd)) {
-        return await genJWT(formData.schoolId);
+        const token = await genJWT(formData.userId, roleId);
+        validateToken(token);
+        return {
+            'data': {
+                'type': 'success',
+                'message': 'User logged in',
+                'user': {
+                    'userId': userId,
+                },
+                'token': token,
+            }
+        }
     } else {
         return {
             'errors': {
@@ -63,7 +75,13 @@ async function validateRequest(userId, roleId) {
  * @return {boolean} - if the token was validated or not
  */
 async function validateToken(token) {
+    const verifyOptions = {
+        issuer: 'SERL-BTH',
+    };
 
+    const verification = await jwt.verify(token, config.jwtSecret, verifyOptions);
+
+    console.log(verification.admin);
 }
 
 /**
@@ -72,10 +90,11 @@ async function validateToken(token) {
  * @async
  *
  * @param {string} userId - The id of the user to give the token to
+ * @param {int} roleId - The Id of the role the user has
  */
-async function genJWT(userId) {
+async function genJWT(userId, roleId) {
     const payload = {
-        test: 'test',
+        admin: roleId === 1 ? true : false,
     };
 
     const signOptions = {
