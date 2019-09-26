@@ -7,7 +7,7 @@
 'use strict';
 //  Import express, router, middleware for logging and setup settings
 const express = require('express');
-const setup = require('./config/setup.json');
+const setup = require('./config/config.json');
 const apiRouter = require('./route/api.js');
 
 //  Define server variable and port

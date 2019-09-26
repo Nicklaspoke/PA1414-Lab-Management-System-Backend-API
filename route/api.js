@@ -9,6 +9,9 @@
 //  Import express, bodyparser and database call handler.
 const express = require('express');
 const apiSql = require('../src/apiSql.js');
+
+const auth = require('../models/auth.js');
+const dbComms = require('../models/dbComms.js');
 const bodyparser = require('body-parser');
 
 //  Define router and urlencodedparser
@@ -37,7 +40,7 @@ router.get('/test', (req, res) => {
  * @param [urlencodedparser] - Object containing form data.
  */
 router.post('/registrer/student', urlencodedparser, async (req, res) => {
-    const message = await apiSql.registerNewStudent(req.body);
+    const message = await dbComms.registerNewStudent(req.body);
 
     res.json(message);
 });
@@ -50,18 +53,26 @@ router.post('/registrer/student', urlencodedparser, async (req, res) => {
  * @param {urlencodedparser} urlencodedparser - Object containing form data
  */
 router.post('/registrer/user', urlencodedparser, async (req, res) => {
-    const message = await apiSql.registerNewUser(req.body);
+
+    //  Authenticate the user
+    if (!req.header('x-access-token')) {
+        res.json({
+            'errors': {
+                'status': 401,
+                'title': 'No token',
+                'details': 'No aceess token provided in header',
+            },
+        });
+    };
 
     res.json(message);
 });
 
 router.post('/login', urlencodedparser, async (req, res) => {
-    const data = await apiSql.login(
-        req.body.schoolId,
-        req.body.password
-    );
 
-    res.json(data);
+    const message = await auth.login(req.body);
+
+    res.json(message);
 });
 
 module.exports = router;
