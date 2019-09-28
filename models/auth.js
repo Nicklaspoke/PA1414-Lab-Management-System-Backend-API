@@ -35,17 +35,17 @@ async function login(formData) {
 
     if (await bcrypt.compare(formData.password, hashedPwd)) {
         const token = await genJWT(formData.userId, roleId);
-        validateToken(token);
+
         return {
             'data': {
                 'type': 'success',
                 'message': 'User logged in',
                 'user': {
-                    'userId': userId,
+                    'userId': formData.userId,
                 },
                 'token': token,
-            }
-        }
+            },
+        };
     } else {
         return {
             'errors': {
@@ -72,16 +72,39 @@ async function validateRequest(userId, roleId) {
  *
  * @param {string} token - a JWT token to validate
  *
- * @return {boolean} - if the token was validated or not
+ *
  */
 async function validateToken(token) {
     const verifyOptions = {
         issuer: 'SERL-BTH',
+        algorithm: 'HS256',
     };
 
-    const verification = await jwt.verify(token, config.jwtSecret, verifyOptions);
+    let decodedToken;
+    let error;
+    jwt.verify(token,
+        config.jwtSecret,
+        verifyOptions,
+        function(err, decoded) {
+            if (err) {
+                console.log(err.name, err.message);
+                error = {
+                    'errors': {
+                        'status': 401,
+                        'title': err.name,
+                        'detail': err.message,
+                    },
+                };
+            };
 
-    console.log(verification.admin);
+            decodedToken = decoded;
+        });
+
+    if (error) {
+        return error;
+    }
+
+    return decodedToken;
 }
 
 /**

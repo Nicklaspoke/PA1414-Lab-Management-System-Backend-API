@@ -39,7 +39,7 @@ router.get('/test', (req, res) => {
  * Handles the creation of a new student in the system
  * @param [urlencodedparser] - Object containing form data.
  */
-router.post('/registrer/student', urlencodedparser, async (req, res) => {
+router.post('/register/student', urlencodedparser, async (req, res) => {
     const message = await dbComms.registerNewStudent(req.body);
 
     res.json(message);
@@ -52,7 +52,7 @@ router.post('/registrer/student', urlencodedparser, async (req, res) => {
  *
  * @param {urlencodedparser} urlencodedparser - Object containing form data
  */
-router.post('/registrer/user', urlencodedparser, async (req, res) => {
+router.post('/register/user', urlencodedparser, async (req, res) => {
 
     //  Authenticate the user
     if (!req.header('x-access-token')) {
@@ -63,9 +63,14 @@ router.post('/registrer/user', urlencodedparser, async (req, res) => {
                 'details': 'No aceess token provided in header',
             },
         });
-    };
+    }
+    const validation = await auth.validateToken(req.header('x-access-token'));
 
-    res.json(message);
+    if (validation.errors) {
+        res.json(validation);
+    }
+
+    res.redirect('/test');
 });
 
 router.post('/login', urlencodedparser, async (req, res) => {
