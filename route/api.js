@@ -8,10 +8,9 @@
 
 //  Import express, bodyparser and database call handler.
 const express = require('express');
-const apiSql = require('../src/apiSql.js');
 
 const auth = require('../models/auth.js');
-const dbComms = require('../models/dbComms.js');
+const register = require('../models/register.js');
 const bodyparser = require('body-parser');
 
 //  Define router and urlencodedparser
@@ -40,7 +39,7 @@ router.get('/test', (req, res) => {
  * @param [urlencodedparser] - Object containing form data.
  */
 router.post('/register/student', urlencodedparser, async (req, res) => {
-    const message = await dbComms.registerNewStudent(req.body);
+    const message = await register.registerStudent(req.body)
 
     res.json(message);
 });
@@ -64,13 +63,28 @@ router.post('/register/user', urlencodedparser, async (req, res) => {
             },
         });
     }
+
     const validation = await auth.validateToken(req.header('x-access-token'));
 
     if (validation.errors) {
         res.json(validation);
     }
 
-    res.redirect('/test');
+    let message;
+
+    if (validation.admin) {
+        message = await register.registerUser(req.body)
+    } else {
+        message = {
+            'errors': {
+                'status': 401,
+                'title': 'Unauthorized User',
+                'details': 'Only users with admins can use this route',
+            },
+        };
+    }
+
+    res.json(message);
 });
 
 router.post('/login', urlencodedparser, async (req, res) => {

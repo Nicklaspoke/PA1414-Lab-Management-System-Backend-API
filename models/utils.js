@@ -31,3 +31,7 @@ async function genPassword(password) {
         salt: salt,
     };
 }
+
+module.exports = {
+    genPassword: genPassword,
+};

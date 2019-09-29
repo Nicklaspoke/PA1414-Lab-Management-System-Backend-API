@@ -61,8 +61,9 @@ async function login(formData) {
  *
  * @param {string} userId - the Id of the user who wants to validate their request
  * @param {int} roleId - the roleId that is needed for a successfull validation
+ * @param {JSON} token - The decoded JWT token
  */
-async function validateRequest(userId, roleId) {
+async function validateRequest(userId, roleId, token) {
 
 }
 
