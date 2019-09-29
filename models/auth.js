@@ -26,7 +26,7 @@ async function login(formData) {
             'errors': {
                 'status': 401,
                 'title': 'Invalid Credetials',
-                'detail': 'Invalid password or school Id',
+                'detail': 'Invalid password or user Id',
             },
         };
     }
