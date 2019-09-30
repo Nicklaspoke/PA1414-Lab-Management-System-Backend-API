@@ -8,10 +8,14 @@
 
 //  Import express, bodyparser and database call handler.
 const express = require('express');
+const bodyparser = require('body-parser');
 
 const auth = require('../models/auth.js');
 const register = require('../models/register.js');
-const bodyparser = require('body-parser');
+const equipment = require('../models/equipment.js');
+const booking = require('../models/booking.js');
+
+const errors = require('../config/errors.json');
 
 //  Define router and urlencodedparser
 // eslint-disable-next-line new-cap
@@ -39,7 +43,7 @@ router.get('/test', (req, res) => {
  * @param [urlencodedparser] - Object containing form data.
  */
 router.post('/register/student', urlencodedparser, async (req, res) => {
-    const message = await register.registerStudent(req.body)
+    const message = await register.registerStudent(req.body);
 
     res.json(message);
 });
@@ -53,38 +57,15 @@ router.post('/register/student', urlencodedparser, async (req, res) => {
  */
 router.post('/register/user', urlencodedparser, async (req, res) => {
 
-    //  Authenticate the user
-    if (!req.header('x-access-token')) {
-        res.json({
-            'errors': {
-                'status': 401,
-                'title': 'No token',
-                'details': 'No aceess token provided in header',
-            },
-        });
-    }
-
-    const validation = await auth.validateToken(req.header('x-access-token'));
+    const token = await auth.validateHeader(req.headers);
 
     if (validation.errors) {
         res.json(validation);
-    }
-
-    let message;
-
-    if (validation.admin) {
-        message = await register.registerUser(req.body)
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
     } else {
-        message = {
-            'errors': {
-                'status': 401,
-                'title': 'Unauthorized User',
-                'details': 'Only users with admins can use this route',
-            },
-        };
+        res.json(await register.registerUser(req.body));
     }
-
-    res.json(message);
 });
 
 router.post('/login', urlencodedparser, async (req, res) => {
@@ -92,6 +73,55 @@ router.post('/login', urlencodedparser, async (req, res) => {
     const message = await auth.login(req.body);
 
     res.json(message);
+});
+
+//  Routes for equipment
+
+//  Gets the equipment from the database with the its info,
+//  such as barcode, name and status
+router.get('/equipment', async (req, res) => {
+    const data = await equipment.getEquipmentData();
+
+    res.json({
+        'data': data,
+    });
+});
+
+//  Route for adding new equipment into the database
+router.post('/equipment', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(errors);
+        return;
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else {
+        res.json(await equipment.addNewEquipment(req.body));
+    }
+});
+
+router.put('/equipment', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(errors);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else {
+        res.json(await equipment.updateEquipment(req.body));
+    }
+});
+
+//  Routes for booking equipment
+router.post('/book', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(errors);
+    } else {
+        res.json(await booking.bookEquipment(token, req.body));
+    }
 });
 
 module.exports = router;

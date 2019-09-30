@@ -66,7 +66,68 @@ async function getLoginDetails(userId) {
 
     return res[0];
 }
+
+/**
+ * Gets the info about all the equipment in the database
+ */
+async function getEquipmentData() {
+    sql = `CALL get_equipment_info`;
+
+    res = await db.query(sql);
+
+    return res[0];
+}
+
+/**
+ * Calls the procedure to insert data for new equipment into the database
+ *
+ * @async
+ *
+ * @param {list} data - contains the form data for the equipment
+ */
+async function addNewEquipment(data) {
+    sql = 'CALL add_new_equipment(?, ?, ?)';
+
+    res = await db.query(sql, data);
+
+    return res[0];
+}
+
+/**
+ *  Calls the procedure for updateing a pice of equipment
+ *
+ * @async
+ *
+ * @param {list} data - contins form data for the equipment
+ */
+async function updateEquipment(data) {
+    sql = 'CALL update_equipment(?, ?, ?)';
+
+    res = await db.query(sql, data);
+
+    return res[0];
+}
+
+/**
+ * Function that calls the booking procedure
+ *
+ * @async
+ *
+ * @param {list} data - contains the user_id and barcode
+ */
+async function bookEquipment(data) {
+    sql = 'CALL book_equipment(?, ?)';
+
+    res = await db.query(sql, data);
+
+    return (res[0][0].message);
+}
+
 module.exports = {
     registerNewUser: registerNewUser,
     getLoginDetails: getLoginDetails,
-}
+    getEquipmentData: getEquipmentData,
+    addNewEquipment: addNewEquipment,
+    updateEquipment: updateEquipment,
+    bookEquipment: bookEquipment,
+};

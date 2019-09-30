@@ -1,0 +1,46 @@
+{
+    "noToken": {
+        "errors": {
+            "status": 401,
+            "title": "No token",
+            "details": "No access token provided in header"
+        }
+    },
+
+    "unauthorizedUser": {
+        "errors": {
+            "status": 401,
+            "title": "Unauthorized User",
+            "details": "Only users with admins can use this route"
+        }
+    },
+
+    "invalidLogin": {
+        "errors": {
+            "status": 401,
+            "title": "Invalid Credetials",
+            "detail": "Invalid password or user Id"
+        }
+    },
+
+    "invalidUser": {
+        "errors": {
+            "title": "Invalid User",
+            "details": "User not registered in the system"
+        }
+    },
+
+    "bookingError": {
+        "errors": {
+            "title": "booking error",
+            "details": "Equipment is already booked"
+        }
+    },
+
+    "barcodeError": {
+        "errors": {
+            "title": "Barcode error",
+            "details": "Invalid barcode"
+        }
+    }
+}

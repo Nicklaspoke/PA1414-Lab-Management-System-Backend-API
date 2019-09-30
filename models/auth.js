@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dbComms = require('./dbComms.js');
 const config = require('../config/config.json');
+const errors = require('../config/errors.json');
 
 /**
  * Checks the login info for the user account with a certain Id
@@ -22,13 +23,7 @@ async function login(formData) {
     const res = await dbComms.getLoginDetails(formData.userId);
 
     if (res[0] === undefined) {
-        return {
-            'errors': {
-                'status': 401,
-                'title': 'Invalid Credetials',
-                'detail': 'Invalid password or user Id',
-            },
-        };
+        return errors.invalidLogin;
     }
     const hashedPwd = res[0].hashedPwd;
     const roleId = res[0].role;
@@ -47,29 +42,34 @@ async function login(formData) {
             },
         };
     } else {
-        return {
-            'errors': {
-                'status': 401,
-                'title': 'Invalid Credetials',
-                'detail': 'Invalid password or school Id',
-            },
-        };
+        return errors.invalidLogin;
     }
 }
 
 /**
+ * Validates that the recived header contains a access token
+ * And validates the token
  *
- * @param {string} userId - the Id of the user who wants to validate their request
- * @param {int} roleId - the roleId that is needed for a successfull validation
- * @param {JSON} token - The decoded JWT token
+ * @param {req.headers} headers - Headers from the requester
+ *
+ * @return {JSON}
  */
-async function validateRequest(userId, roleId, token) {
+async function validateHeader(headers) {
+    //  Authenticate the user
+    if (!headers['x-access-token']) {
+        return errors.noToken;
+    }
+
+    const validation = await validateToken(headers['x-access-token']);
+
+    return validation;
+
 
 }
 
 /**
  *Validates a JWT
-
+ * @async
  *
  * @param {string} token - a JWT token to validate
  *
@@ -88,7 +88,6 @@ async function validateToken(token) {
         verifyOptions,
         function(err, decoded) {
             if (err) {
-                console.log(err.name, err.message);
                 error = {
                     'errors': {
                         'status': 401,
@@ -134,6 +133,6 @@ async function genJWT(userId, roleId) {
 }
 module.exports = {
     validateToken: validateToken,
-    validateRequest: validateRequest,
+    validateHeader: validateHeader,
     login: login,
 };

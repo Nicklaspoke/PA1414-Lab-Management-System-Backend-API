@@ -32,7 +32,9 @@ async function registerStudent(formData) {
 
     const message = await dbComms.registerNewUser(data);
 
-    console.log(message);
+    return {
+        'data': message,
+    };
 }
 
 /**
@@ -53,7 +55,9 @@ async function registerUser(formData) {
 
     const message = await dbComms.registerNewUser(data);
 
-    return message;
+    return {
+        'data': message,
+    };
 }
 
 module.exports = {
