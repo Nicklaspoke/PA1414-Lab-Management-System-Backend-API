@@ -1,5 +1,7 @@
 /**
  * Module that handles booking
+ *
+ * @author Nicklas König (niko14)
  */
 'use strict';
 
@@ -46,7 +48,18 @@ async function bookEquipment(token, formData) {
  * @param {int} bookingId - the id of the booking that is going to be approved
  */
 async function approveBooking(bookingId) {
+    const data = [
+        bookingId,
+    ];
 
+    const message = await dbComms.approveBooking(data);
+
+    switch (message) {
+    case 'booking_id failure':
+        return errors.bookingIdError;
+    case 'approval failure':
+        return errors.approvalError;
+    }
 }
 
 module.exports = {

@@ -123,6 +123,21 @@ async function bookEquipment(data) {
     return (res[0][0].message);
 }
 
+/**
+ *Function for calling the booking procedure
+ *
+ * @async
+ *
+ * @param {list} data - list with the booking id
+ */
+async function approveBooking(data) {
+    sql = 'CALL approve_booking(?)';
+
+    res = await db.query(sql, data);
+
+    return (res[0][0].message);
+}
+
 module.exports = {
     registerNewUser: registerNewUser,
     getLoginDetails: getLoginDetails,
@@ -130,4 +145,5 @@ module.exports = {
     addNewEquipment: addNewEquipment,
     updateEquipment: updateEquipment,
     bookEquipment: bookEquipment,
+    approveBooking: approveBooking,
 };

@@ -1,5 +1,7 @@
 /**
  * Module for handling all the different tasks with equipment
+ *
+ * @author Nicklas König (niko14)
  */
 'use strict';
 

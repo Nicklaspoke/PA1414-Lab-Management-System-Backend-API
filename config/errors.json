@@ -42,5 +42,19 @@
             "title": "Barcode error",
             "details": "Invalid barcode"
         }
+    },
+
+    "bookingIdError": {
+        "errors": {
+            "title": "Booking id error",
+            "details": "Booking id dosen't exists"
+        }
+    },
+
+    "approvalError": {
+        "errors": {
+            "title": "Can't approve booking",
+            "details": "Can't approve a booking that is either checked out or returned"
+        }
     }
 }

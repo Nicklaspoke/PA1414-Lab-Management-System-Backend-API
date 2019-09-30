@@ -59,8 +59,8 @@ router.post('/register/user', urlencodedparser, async (req, res) => {
 
     const token = await auth.validateHeader(req.headers);
 
-    if (validation.errors) {
-        res.json(validation);
+    if (token.errors) {
+        res.json(token.errors);
     } else if (!token.admin) {
         res.json(errors.unauthorizedUser);
     } else {
@@ -92,7 +92,7 @@ router.post('/equipment', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
-        res.json(errors);
+        res.json(token.errors);
         return;
     } else if (!token.admin) {
         res.json(errors.unauthorizedUser);
@@ -105,7 +105,7 @@ router.put('/equipment', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
-        res.json(errors);
+        res.json(token.errors);
     } else if (!token.admin) {
         res.json(errors.unauthorizedUser);
     } else {
@@ -121,6 +121,18 @@ router.post('/book', urlencodedparser, async (req, res) => {
         res.json(errors);
     } else {
         res.json(await booking.bookEquipment(token, req.body));
+    }
+});
+
+router.post('/book/approve', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(token.errors);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else {
+        res.json(await booking.approveBooking(req.body));
     }
 });
 
