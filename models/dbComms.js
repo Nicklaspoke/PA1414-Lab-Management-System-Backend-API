@@ -30,60 +30,16 @@ let res;
 /**
  * Register a new user to the database
  *
- * @param {urlencodedparser} formData - Object containing form data
+ * @param {list} data - list with all the info
  *
  * @return {JSON} - With a responce about the account creation
  *
  */
-async function registerNewStudent(formData) {
-    //  Create unique api-key
-    const apiKey = rack();
-
-    pwd = await genPassword(password);
-
+async function registerNewUser(data) {
     //  Send the data to the database for storing
-    sql = `CALL register_new_user(?, ?, ?, ?, ?, ?)`;
-    res = await db.query(sql,
-        [
-            formData.schoolId,
-            formData.email,
-            4,
-            pwd.hash,
-            pwd.salt,
-            apiKey,
-        ]
-    );
-
-    if (res.length != undefined) {
-        for (const row of res[0]) {
-            return {
-                'data': {
-                    'message': row.message,
-                }
-            };
-        }
-    }
-}
-/**
- *Form from admin interface where a user is created
- *
- * @async
- *
- * @param {formData} formData - Data from the registrationform
- */
-async function registerNewUser(formData) {
-    sql = `CALL register_new_user(?, ?, ?, ?, ?, ?)`;
-
-    res = await db.query(sql,
-        [
-            formData.schoolId,
-            formData.email,
-            formData.role,
-            pwd.hash,
-            pwd.salt,
-            apiKey,
-        ]
-    );
+    sql = `CALL register_new_user(?, ?, ?, ?, ?)`;
+    console.log(data);
+    res = await db.query(sql, data);
 
     if (res.length != undefined) {
         for (const row of res[0]) {
@@ -111,7 +67,6 @@ async function getLoginDetails(userId) {
     return res[0];
 }
 module.exports = {
-    registerNewStudent: registerNewStudent,
     registerNewUser: registerNewUser,
     getLoginDetails: getLoginDetails,
 }

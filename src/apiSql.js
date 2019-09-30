@@ -7,7 +7,6 @@
 //  Import required packages for the api
 const mysql = require('promise-mysql');
 const dbConfig = require('../config/db/login.json');
-const hat = require('hat');
 const bcrypt = require('bcryptjs');
 
 let db;
