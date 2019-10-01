@@ -6,8 +6,19 @@
 'use strict';
 
 const dbComms = require('./dbComms.js');
-const utils = require('./utils.js');
 
+/**
+ * Function that handles retrival of booked equipment
+ *
+ * @async
+ *
+ * @param {JSON} token - JWT containing user data
+ */
+async function getBookedEquipment(token) {
+    const data = [
+        token.sub,
+    ];
+}
 /**
  * Function for handling the booking of equipment
  *
@@ -26,7 +37,6 @@ async function bookEquipment(token, formData) {
 
     if (message.includes('Error')) {
         return errors[message];
-
     } else {
         return {
             'data': {
@@ -74,7 +84,18 @@ async function denyBooking(bookingId) {
     }
 }
 
+/**
+ *
+ * @param {JSON} token - JWT token containing the user data
+ * @param {int} bookingId
+ */
+async function checkOutEquipment(token, bookingId) {
+
+}
 module.exports = {
+    getBookedEquipment: getBookedEquipment,
     bookEquipment: bookEquipment,
     approveBooking: approveBooking,
+    denyBooking: denyBooking,
+    checkOutEquipment: checkOutEquipment,
 };

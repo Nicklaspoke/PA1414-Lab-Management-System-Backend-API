@@ -113,21 +113,35 @@ router.put('/equipment', urlencodedparser, async (req, res) => {
 });
 
 //  Routes for booking equipment
+
+//  Gets the bookings for a user
+router.get('/booking', async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(token);
+    } else {
+        res.json(await booking.getBookedEquipment(token));
+    }
+});
+
+//  Creates a booking for a user
 router.post('/booking', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
-        res.json(errors);
+        res.json(token);
     } else {
         res.json(await booking.bookEquipment(token, req.body));
     }
 });
 
+//  Approves booking for a user
 router.put('/booking/approve', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
-        res.json(token.errors);
+        res.json(token);
     } else if (!token.admin) {
         res.json(errors.unauthorizedUserError);
     } else {
@@ -135,7 +149,26 @@ router.put('/booking/approve', urlencodedparser, async (req, res) => {
     }
 });
 
+//  Denies a booking for a user
 router.put('/booking/deny', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(token.errors);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUserError);
+    } else {
+        res.json(await booking.denyBooking(req.body));
+    }
+});
+
+router.put('/booking/checkout', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(token.errors);
+    } else {
+        res.json(await booking.checkOutEquipment(token, req.body));
+    }
 });
 module.exports = router;

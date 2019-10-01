@@ -7,7 +7,6 @@
 'use strict';
 
 const bcrypt = require('bcryptjs');
-const errors = require('../config/errors.json');
 
 /**
  * Generate a new password for the user

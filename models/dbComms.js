@@ -97,9 +97,25 @@ async function updateEquipment(data) {
 
     res = await db.query(sql, data);
 
-    return res[0];
+    return res[0][0].message;
 }
 
+/**
+ * Function that handles the retrival of bookings from a user
+ *
+ * @param {list} data - conatins the userId to get bookings from
+ */
+async function getBookings(data) {
+    sql = 'CALL get_booked_equipment(?)';
+
+    res = await db.query(sql, data);
+
+    if (res[0][0].message) {
+        return res[0][0].message;
+    } else {
+        return res[0];
+    }
+}
 /**
  * Function that calls the booking procedure
  *
@@ -151,6 +167,7 @@ module.exports = {
     getEquipmentData: getEquipmentData,
     addNewEquipment: addNewEquipment,
     updateEquipment: updateEquipment,
+    getBookings: getBookings,
     bookEquipment: bookEquipment,
     approveBooking: approveBooking,
     denyBooking: denyBooking,

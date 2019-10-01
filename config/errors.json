@@ -65,6 +65,12 @@
         }
     },
 
+    "denyingError": {
+        "errors": {
+            "title": "Can't deny booking",
+            "details": "Can't deny a booking that is either checked out or returned"
+        }
+    },
     "userIdError": {
         "errors": {
             "title": "User Id error",
