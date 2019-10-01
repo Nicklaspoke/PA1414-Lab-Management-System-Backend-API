@@ -49,14 +49,14 @@ router.post('/register/student', urlencodedparser, async (req, res) => {
 });
 
 /**
- * Creates a user based on a form from the admin. Will need a key that as admin access
+ * Creates a user based on a form from the admin.
+ * Will need a key that as admin access
  *
  * @async
  *
  * @param {urlencodedparser} urlencodedparser - Object containing form data
  */
 router.post('/register/user', urlencodedparser, async (req, res) => {
-
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
@@ -69,7 +69,6 @@ router.post('/register/user', urlencodedparser, async (req, res) => {
 });
 
 router.post('/login', urlencodedparser, async (req, res) => {
-
     const message = await auth.login(req.body);
 
     res.json(message);
@@ -114,7 +113,7 @@ router.put('/equipment', urlencodedparser, async (req, res) => {
 });
 
 //  Routes for booking equipment
-router.post('/book', urlencodedparser, async (req, res) => {
+router.post('/booking', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
@@ -124,16 +123,19 @@ router.post('/book', urlencodedparser, async (req, res) => {
     }
 });
 
-router.post('/book/approve', urlencodedparser, async (req, res) => {
+router.put('/booking/approve', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
         res.json(token.errors);
     } else if (!token.admin) {
-        res.json(errors.unauthorizedUser);
+        res.json(errors.unauthorizedUserError);
     } else {
         res.json(await booking.approveBooking(req.body));
     }
 });
 
+router.put('/booking/deny', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+});
 module.exports = router;

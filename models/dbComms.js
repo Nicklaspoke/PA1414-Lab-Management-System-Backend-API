@@ -38,18 +38,10 @@ let res;
 async function registerNewUser(data) {
     //  Send the data to the database for storing
     sql = `CALL register_new_user(?, ?, ?, ?, ?)`;
-    console.log(data);
+
     res = await db.query(sql, data);
 
-    if (res.length != undefined) {
-        for (const row of res[0]) {
-            return {
-                'data': {
-                    'message': row.message,
-                },
-            };
-        }
-    }
+    return res[0][0].message;
 }
 
 /**
@@ -124,7 +116,7 @@ async function bookEquipment(data) {
 }
 
 /**
- *Function for calling the booking procedure
+ *Function for calling the approve booking procedure
  *
  * @async
  *
@@ -132,6 +124,21 @@ async function bookEquipment(data) {
  */
 async function approveBooking(data) {
     sql = 'CALL approve_booking(?)';
+
+    res = await db.query(sql, data);
+
+    return (res[0][0].message);
+}
+
+/**
+ *Function for calling the deny booking procedure
+ *
+ * @async
+ *
+ * @param {list} data - list that contains the booking id
+ */
+async function denyBooking(data) {
+    sql = 'CALL deny_booking(?)';
 
     res = await db.query(sql, data);
 
@@ -146,4 +153,5 @@ module.exports = {
     updateEquipment: updateEquipment,
     bookEquipment: bookEquipment,
     approveBooking: approveBooking,
+    denyBooking: denyBooking,
 };

@@ -6,14 +6,14 @@
 'use strict';
 
 const dbComms = require('./dbComms.js');
-const errors = require('../config/errors.json');
+const utils = require('./utils.js');
 
 /**
  * Function for handling the booking of equipment
  *
  * @async
  *
- * @param {JSON} token - jwt containing the userId of the person who want's to book
+ * @param {JSON} token - jwt containing the userId for the bookign
  * @param {formData} formData - data from the booking form
  */
 async function bookEquipment(token, formData) {
@@ -24,14 +24,10 @@ async function bookEquipment(token, formData) {
 
     const message = await dbComms.bookEquipment(data);
 
-    switch (message) {
-    case 'barcode failure':
-        return errors.barcodeError;
-    case 'user failure':
-        return errors.invalidUser;
-    case 'status failure':
-        return errors.bookingError;
-    case 'success':
+    if (message.includes('Error')) {
+        return errors[message];
+
+    } else {
         return {
             'data': {
                 'message': 'Booking succesfull, awaiting aproval form admin',
@@ -54,11 +50,27 @@ async function approveBooking(bookingId) {
 
     const message = await dbComms.approveBooking(data);
 
-    switch (message) {
-    case 'booking_id failure':
-        return errors.bookingIdError;
-    case 'approval failure':
-        return errors.approvalError;
+    if (message.includes('Error')) {
+        return errors[message];
+    }
+}
+
+/**
+ * Function for handling denying of a booking
+ *
+ * @async
+ *
+ * @param {int} bookingId - the id of the booking that is going to be denied
+ */
+async function denyBooking(bookingId) {
+    const data = [
+        bookingId,
+    ];
+
+    const message = await dbComms.denyBooking(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
     }
 }
 

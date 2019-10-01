@@ -6,6 +6,7 @@
 'use strict';
 
 const dbComms = require('./dbComms.js');
+const errors = require('../config/errors.json');
 
 /**
  * Gets the equipment data and converts status int into a string for the humans
@@ -13,7 +14,7 @@ const dbComms = require('./dbComms.js');
  * @async
  */
 async function getEquipmentData() {
-    let data = await dbComms.getEquipmentData();
+    const data = await dbComms.getEquipmentData();
 
     for (const row of data) {
         switch (row.status) {
@@ -56,11 +57,14 @@ async function addNewEquipment(formData) {
 
     const message = await dbComms.addNewEquipment(data);
 
-    return {
-        'data': message,
-    };
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'data': message,
+        };
+    }
 }
-
 /**
  * Takes data from the form and updates the selected equipment
  *
@@ -78,9 +82,13 @@ async function updateEquipment(formData) {
 
     const message = await dbComms.updateEquipment(data);
 
-    return {
-        'data': message,
-    };
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'data': message,
+        };
+    }
 }
 
 module.exports = {

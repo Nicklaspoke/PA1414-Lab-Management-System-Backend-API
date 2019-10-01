@@ -7,7 +7,8 @@
 'use strict';
 
 const dbComms = require('./dbComms.js');
-const utils = require('./utils.js')
+const utils = require('./utils.js');
+const errors = require('../config/errors.json');
 
 /**
  * Takes the formdata and parses it to a list that is sent
@@ -32,9 +33,13 @@ async function registerStudent(formData) {
 
     const message = await dbComms.registerNewUser(data);
 
-    return {
-        'data': message,
-    };
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'data': message,
+        };
+    }
 }
 
 /**
@@ -55,9 +60,13 @@ async function registerUser(formData) {
 
     const message = await dbComms.registerNewUser(data);
 
-    return {
-        'data': message,
-    };
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'data': message,
+        };
+    }
 }
 
 module.exports = {

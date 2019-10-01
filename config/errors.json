@@ -1,5 +1,5 @@
 {
-    "noToken": {
+    "noTokenError": {
         "errors": {
             "status": 401,
             "title": "No token",
@@ -7,7 +7,7 @@
         }
     },
 
-    "unauthorizedUser": {
+    "unauthorizedUserError": {
         "errors": {
             "status": 401,
             "title": "Unauthorized User",
@@ -15,15 +15,15 @@
         }
     },
 
-    "invalidLogin": {
+    "invalidLoginError": {
         "errors": {
             "status": 401,
             "title": "Invalid Credetials",
-            "detail": "Invalid password or user Id"
+            "details": "Invalid password or user Id"
         }
     },
 
-    "invalidUser": {
+    "invalidUserError": {
         "errors": {
             "title": "Invalid User",
             "details": "User not registered in the system"
@@ -44,6 +44,13 @@
         }
     },
 
+    "barcodeRegError": {
+        "errors": {
+            "title": "Barcode Registration error",
+            "details": "That barcode alreay exists"
+        }
+    },
+
     "bookingIdError": {
         "errors": {
             "title": "Booking id error",
@@ -55,6 +62,27 @@
         "errors": {
             "title": "Can't approve booking",
             "details": "Can't approve a booking that is either checked out or returned"
+        }
+    },
+
+    "userIdError": {
+        "errors": {
+            "title": "User Id error",
+            "details": "Account with that user Id already registered"
+        }
+    },
+
+    "emailRegError": {
+        "errors": {
+            "title": "Email error",
+            "detail": "User with that email already registered"
+        }
+    },
+
+    "accountNotApprovedError": {
+        "errors": {
+            "title": "Account error",
+            "detail": "Account has not been approved by admin"
         }
     }
 }

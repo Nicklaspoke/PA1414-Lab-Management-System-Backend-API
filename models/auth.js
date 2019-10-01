@@ -23,12 +23,16 @@ async function login(formData) {
     const res = await dbComms.getLoginDetails(formData.userId);
 
     if (res[0] === undefined) {
-        return errors.invalidLogin;
+        return errors.invalidLoginError;
     }
     const hashedPwd = res[0].hashedPwd;
     const roleId = res[0].role;
 
     if (await bcrypt.compare(formData.password, hashedPwd)) {
+        if (roleId === 4) {
+            return errors.accountNotApprovedError;
+        }
+
         const token = await genJWT(formData.userId, roleId);
 
         return {
@@ -42,7 +46,7 @@ async function login(formData) {
             },
         };
     } else {
-        return errors.invalidLogin;
+        return errors.invalidLoginError;
     }
 }
 
@@ -57,14 +61,12 @@ async function login(formData) {
 async function validateHeader(headers) {
     //  Authenticate the user
     if (!headers['x-access-token']) {
-        return errors.noToken;
+        return errors.noTokenError;
     }
 
     const validation = await validateToken(headers['x-access-token']);
 
     return validation;
-
-
 }
 
 /**
