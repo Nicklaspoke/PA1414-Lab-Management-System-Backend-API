@@ -43,6 +43,15 @@ async function registerStudent(formData) {
 }
 
 /**
+ * Approves the registration of a user account
+ *
+ * @param {string} userId - the id of the user to aprove
+ */
+async function changeUserStatus(userId, newStatus) {
+
+}
+
+/**
  *
  * @param {formData} formData - Data from the registration form for admins
  */
@@ -72,4 +81,5 @@ async function registerUser(formData) {
 module.exports = {
     registerStudent: registerStudent,
     registerUser: registerUser,
+    changeUserStatus: changeUserStatus,
 };

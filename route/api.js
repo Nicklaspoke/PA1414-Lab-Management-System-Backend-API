@@ -14,7 +14,7 @@ const auth = require('../models/auth.js');
 const register = require('../models/register.js');
 const equipment = require('../models/equipment.js');
 const booking = require('../models/booking.js');
-
+const utils = require('../models/utils.js');
 const errors = require('../config/errors.json');
 
 //  Define router and urlencodedparser
@@ -43,9 +43,15 @@ router.get('/test', (req, res) => {
  * @param [urlencodedparser] - Object containing form data.
  */
 router.post('/register/student', urlencodedparser, async (req, res) => {
-    const message = await register.registerStudent(req.body);
+    const validation = utils.validateFormData(req.body, 'userRegistration');
 
-    res.json(message);
+    if (validation.errors) {
+        res.json(validation);
+    } else {
+        const message = await register.registerStudent(req.body);
+
+        res.json(message);
+    }
 });
 
 /**
@@ -58,20 +64,60 @@ router.post('/register/student', urlencodedparser, async (req, res) => {
  */
 router.post('/register/user', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'userRegistration');
 
     if (token.errors) {
-        res.json(token.errors);
+        res.json(token);
     } else if (!token.admin) {
         res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
     } else {
         res.json(await register.registerUser(req.body));
     }
 });
 
-router.post('/login', urlencodedparser, async (req, res) => {
-    const message = await auth.login(req.body);
+//  Route for admin to approve a registered teacher/student account
+router.put('/register/approve', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'userApprove');
 
-    res.json(message);
+    if (token.errors) {
+        res.json(token);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
+    } else {
+        res.json(await register.changeUserStatus(req.body, 3));
+    }
+});
+
+//  Route for admin to approve a registered teacher/student account
+router.put('/register/deny', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'userApprove');
+
+    if (token.errors) {
+        res.json(token);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
+    } else {
+        res.json(await register.changeUserStatus(req.body, 5));
+    }
+});
+router.post('/login', urlencodedparser, async (req, res) => {
+    const validation = utils.validateFormData(req.body, 'login');
+
+    if (validation.errors) {
+        res.json(validation);
+    } else {
+        const message = await auth.login(req.body);
+
+        res.json(message);
+    }
 });
 
 //  Routes for equipment
@@ -89,12 +135,15 @@ router.get('/equipment', async (req, res) => {
 //  Route for adding new equipment into the database
 router.post('/equipment', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'equipmentRegistraion');
 
     if (token.errors) {
         res.json(token.errors);
         return;
     } else if (!token.admin) {
         res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
     } else {
         res.json(await equipment.addNewEquipment(req.body));
     }
@@ -102,11 +151,14 @@ router.post('/equipment', urlencodedparser, async (req, res) => {
 
 router.put('/equipment', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'equipmentRegistraion');
 
     if (token.errors) {
         res.json(token.errors);
     } else if (!token.admin) {
         res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
     } else {
         res.json(await equipment.updateEquipment(req.body));
     }
@@ -125,6 +177,16 @@ router.get('/booking', async (req, res) => {
     }
 });
 
+//  Gets all bookings for the admin
+router.get('/booking/all', async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+    if (token.errors) {
+        res.json(token);
+    } else {
+        res.json(await booking.getAllBookings());
+    }
+});
+
 //  Creates a booking for a user
 router.post('/booking', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
@@ -139,13 +201,13 @@ router.post('/booking', urlencodedparser, async (req, res) => {
 //  Approves booking for a user
 router.put('/booking/approve', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
-
+    console.log(req.headers);
     if (token.errors) {
         res.json(token);
     } else if (!token.admin) {
         res.json(errors.unauthorizedUserError);
     } else {
-        res.json(await booking.approveBooking(req.body));
+        res.json(await booking.approveBooking(req.body.bookingId));
     }
 });
 
@@ -158,7 +220,7 @@ router.put('/booking/deny', urlencodedparser, async (req, res) => {
     } else if (!token.admin) {
         res.json(errors.unauthorizedUserError);
     } else {
-        res.json(await booking.denyBooking(req.body));
+        res.json(await booking.denyBooking(req.body.bookingId));
     }
 });
 

@@ -6,6 +6,7 @@
 'use strict';
 
 const dbComms = require('./dbComms.js');
+const errors = require('../config/errors.json');
 
 /**
  * Function that handles retrival of booked equipment
@@ -18,6 +19,25 @@ async function getBookedEquipment(token) {
     const data = [
         token.sub,
     ];
+
+    const res = await dbComms.getBookings(data);
+
+    if (res.message) {
+        return errors[message];
+    } else {
+        return res;
+    }
+}
+
+/**
+ * Retives all bookings in the database fpr the admin
+ *
+ * @async
+ */
+async function getAllBookings() {
+    const res = await dbComms.getAllBookings()
+
+    return res;
 }
 /**
  * Function for handling the booking of equipment
@@ -95,6 +115,7 @@ async function checkOutEquipment(token, bookingId) {
 module.exports = {
     getBookedEquipment: getBookedEquipment,
     bookEquipment: bookEquipment,
+    getAllBookings: getAllBookings,
     approveBooking: approveBooking,
     denyBooking: denyBooking,
     checkOutEquipment: checkOutEquipment,

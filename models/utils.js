@@ -8,6 +8,9 @@
 
 const bcrypt = require('bcryptjs');
 
+const errors = require('../config/errors.json');
+const formValidation = require('../config/formValidation.json');
+
 /**
  * Generate a new password for the user
  *
@@ -32,6 +35,24 @@ async function genPassword(password) {
     };
 }
 
+/**
+ * Validates the data in the form so all values are present
+ *
+ * @param {formData} formData - the data to validate
+ * @param {string} type - which type of form to register
+ *
+ * @return {JSON}
+ */
+function validateFormData(formData, type) {
+    for (const field of formValidation[type]) {
+        if (field in formData === false) {
+            return errors.invalidFormError;
+        }
+    }
+    return {'Ok': 'Ok'};
+}
+
 module.exports = {
     genPassword: genPassword,
+    validateFormData: validateFormData,
 };

@@ -61,14 +61,14 @@
     "approvalError": {
         "errors": {
             "title": "Can't approve booking",
-            "details": "Can't approve a booking that is either checked out or returned"
+            "details": "Can't approve a booking that is either already approved, checked out or returned"
         }
     },
 
     "denyingError": {
         "errors": {
             "title": "Can't deny booking",
-            "details": "Can't deny a booking that is either checked out or returned"
+            "details": "Can't deny a booking that is already approved, checked out or returned"
         }
     },
     "userIdError": {
@@ -89,6 +89,20 @@
         "errors": {
             "title": "Account error",
             "detail": "Account has not been approved by admin"
+        }
+    },
+
+    "noUserIdError": {
+        "errors": {
+            "title": "No user id error",
+            "detail": "No usr with that id is registered"
+        }
+    },
+
+    "invalidFormError": {
+        "errors": {
+            "title": "Invalid form data",
+            "detail": "Invalid form data, see documentaion for correct values"
         }
     }
 }

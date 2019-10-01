@@ -45,6 +45,18 @@ async function registerNewUser(data) {
 }
 
 /**
+ *
+ * @param {list} data - list containing userId and new status
+ */
+async function changeUserStatus(data) {
+    sql = 'CALL change_user_status(?, ?)';
+
+    res = await db.query(sql, data);
+
+    return res[0][0].message;
+}
+
+/**
  * Gets the hashed password for the user that want's to login
  *
  * @async
@@ -116,6 +128,17 @@ async function getBookings(data) {
         return res[0];
     }
 }
+
+/**
+ * Gets all bookings for the admin
+ */
+async function getAllBookings() {
+    sql = 'CALL get_all_bookings';
+
+    res = await db.query(sql);
+
+    return res[0];
+}
 /**
  * Function that calls the booking procedure
  *
@@ -163,11 +186,13 @@ async function denyBooking(data) {
 
 module.exports = {
     registerNewUser: registerNewUser,
+    changeUserStatus: changeUserStatus,
     getLoginDetails: getLoginDetails,
     getEquipmentData: getEquipmentData,
     addNewEquipment: addNewEquipment,
     updateEquipment: updateEquipment,
     getBookings: getBookings,
+    getAllBookings: getAllBookings,
     bookEquipment: bookEquipment,
     approveBooking: approveBooking,
     denyBooking: denyBooking,

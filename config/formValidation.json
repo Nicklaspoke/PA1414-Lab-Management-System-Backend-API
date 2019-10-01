@@ -1,0 +1,30 @@
+{
+    "login": [
+        "userId",
+        "password"
+    ],
+
+    "userRegistration": [
+        "userId",
+        "email",
+        "password"
+    ],
+
+    "equipmentRegistraion": [
+        "barcode",
+        "name",
+        "borrowTime"
+    ],
+
+    "bookingReg": [
+        "barcode"
+    ],
+
+    "userApprove": [
+        "userId"
+    ],
+
+    "booking": [
+        "bookingId"
+    ]
+}
