@@ -10,6 +10,7 @@ const errors = require('../config/errors.json');
 
 /**
  * Function that handles retrival of booked equipment
+ * of a user
  *
  * @async
  *
@@ -30,7 +31,7 @@ async function getBookedEquipment(token) {
 }
 
 /**
- * Retives all bookings in the database fpr the admin
+ * Retives all bookings in the database for the admin
  *
  * @async
  */
