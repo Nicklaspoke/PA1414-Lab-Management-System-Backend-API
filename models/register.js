@@ -45,13 +45,14 @@ async function registerStudent(formData) {
 /**
  * Approves the registration of a user account
  *
- * @param {string} userId - the id of the user to aprove
- * @param {int} newStatus - the new status id of the user
+ * @async
+ *
+ * @param {formData} formData - Conatins data for the database procedure
  */
-async function changeUserStatus(userId, newStatus) {
+async function changeUserStatus(formData) {
     const data = [
-        userId,
-        newStatus,
+        formData.userId,
+        formData.role != undefined ? formData.role : 3,
     ];
 
     const message = await dbComms.changeUserStatus(data);

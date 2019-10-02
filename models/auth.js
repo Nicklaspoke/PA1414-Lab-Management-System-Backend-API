@@ -21,9 +21,11 @@ const errors = require('../config/errors.json');
  */
 async function login(formData) {
     const res = await dbComms.getLoginDetails(formData.userId);
-
+    console.log(res);
     if (res[0] === undefined) {
         return errors.invalidLoginError;
+    } else if (res[0].message) {
+        return errors[res[0].message];
     }
     const hashedPwd = res[0].hashedPwd;
     const roleId = res[0].role;

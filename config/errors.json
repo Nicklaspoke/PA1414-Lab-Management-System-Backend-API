@@ -111,5 +111,12 @@
             "title": "Invalid form data",
             "detail": "Invalid form data, see documentaion for correct values"
         }
+    },
+
+    "userRemovedError": {
+        "errors": {
+            "title": "Account removed error",
+            "detail": "This account has been removed from active accounts, if you belive this was a misstake. Contact admin for restoration of the account"
+        }
     }
 }
