@@ -46,9 +46,68 @@ async function registerStudent(formData) {
  * Approves the registration of a user account
  *
  * @param {string} userId - the id of the user to aprove
+ * @param {int} newStatus - the new status id of the user
  */
 async function changeUserStatus(userId, newStatus) {
+    const data = [
+        userId,
+        newStatus,
+    ];
 
+    const message = await dbComms.changeUserStatus(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'status': '200 Ok',
+        };
+    }
+}
+
+/**
+ * Denies a user account, compleatly removes them from the database
+ *
+ * @async
+ *
+ * @param {string} userId
+ */
+async function denyUser(userId) {
+    const data = [
+        userId,
+    ];
+
+    const message = await dbComms.denyUserAccount(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'status': '200 Ok',
+        };
+    }
+}
+
+/**
+ * Marks the user as deleted/removed in the database
+ * aka a soft delete
+ *
+ * @param {string} userId
+ */
+async function removeUser(userId) {
+    const data = [
+        userId,
+    ];
+
+    const message = await dbComms.removeUser(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'status': '200 Ok',
+        };
+    }
 }
 
 /**
@@ -82,4 +141,6 @@ module.exports = {
     registerStudent: registerStudent,
     registerUser: registerUser,
     changeUserStatus: changeUserStatus,
+    removeUser: removeUser,
+    denyUser: denyUser,
 };

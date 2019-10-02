@@ -56,7 +56,7 @@ router.post('/register/student', urlencodedparser, async (req, res) => {
 
 /**
  * Creates a user based on a form from the admin.
- * Will need a key that as admin access
+ * Will need a key that has admin access
  *
  * @async
  *
@@ -89,12 +89,12 @@ router.put('/register/approve', urlencodedparser, async (req, res) => {
     } else if (validation.errors) {
         res.json(validation);
     } else {
-        res.json(await register.changeUserStatus(req.body, 3));
+        res.json(await register.changeUserStatus(req.body.userId, 3));
     }
 });
 
 //  Route for admin to approve a registered teacher/student account
-router.put('/register/deny', urlencodedparser, async (req, res) => {
+router.delete('/register/deny', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'userApprove');
 
@@ -105,9 +105,24 @@ router.put('/register/deny', urlencodedparser, async (req, res) => {
     } else if (validation.errors) {
         res.json(validation);
     } else {
-        res.json(await register.changeUserStatus(req.body, 5));
+        res.json(await register.denyUser(req.body.userId));
     }
 });
+
+router.delete('/register', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'userApprove');
+
+    if (token.errors) {
+        res.json(token);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
+    } else {
+        res.json(await register.removeUser(req.body.userId));
+    }
+})
 router.post('/login', urlencodedparser, async (req, res) => {
     const validation = utils.validateFormData(req.body, 'login');
 
@@ -164,6 +179,20 @@ router.put('/equipment', urlencodedparser, async (req, res) => {
     }
 });
 
+router.delete('/equipment', urlencodedparser, async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'equipmentRemoval');
+
+    if (token.errors) {
+        res.json(token.errors);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
+    } else {
+        res.json(await equipment.removeEquipment(req.body));
+    }
+});
 //  Routes for booking equipment
 
 //  Gets the bookings for a user
@@ -207,7 +236,7 @@ router.put('/booking/approve', urlencodedparser, async (req, res) => {
     } else if (!token.admin) {
         res.json(errors.unauthorizedUserError);
     } else {
-        res.json(await booking.approveBooking(req.body.bookingId));
+        res.json(await booking.changeBookingStatus(req.body.bookingId, 2));
     }
 });
 

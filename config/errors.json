@@ -95,7 +95,14 @@
     "noUserIdError": {
         "errors": {
             "title": "No user id error",
-            "detail": "No usr with that id is registered"
+            "detail": "No user with that id is registered"
+        }
+    },
+
+    "userStatusError": {
+        "errors": {
+            "title": "User status error",
+            "detail": "Can't deny account for a user that i already approved"
         }
     },
 

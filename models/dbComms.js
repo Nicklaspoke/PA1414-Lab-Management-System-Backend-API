@@ -57,6 +57,35 @@ async function changeUserStatus(data) {
 }
 
 /**
+ * Makrs a user as deleted/removed in the database
+ *
+ * @async
+ *
+ * @param {list} data - containing data for the database procedure
+ */
+async function removeUser(data) {
+    sql = 'CALL remove_user(?)';
+
+    res = await db.query(sql, data);
+
+    return res[0][0].message;
+}
+/**
+ * Denies a user account and remoes them from the database
+ *
+ * @async
+ *
+ * @param {list} data - contains the userId to deny approval
+ */
+async function denyUserAccount(data) {
+    sql = 'CALL deny_user_account(?)';
+
+    const res = await db.query(sql, data);
+
+    return res[0][0].message;
+}
+
+/**
  * Gets the hashed password for the user that want's to login
  *
  * @async
@@ -107,7 +136,22 @@ async function addNewEquipment(data) {
 async function updateEquipment(data) {
     sql = 'CALL update_equipment(?, ?, ?)';
 
-    res = await db.query(sql, data);
+    const res = await db.query(sql, data);
+
+    return res[0][0].message;
+}
+
+/**
+ * Marks a piace of equipment as deleted in the database
+ *
+ * @async
+ *
+ * @param {list} data - contains the data for the called procedure
+ */
+async function removeEquipment(data) {
+    sql = 'CALL remove_eqiupment(?)';
+
+    const res = await db.query(sql, data);
 
     return res[0][0].message;
 }
@@ -187,10 +231,13 @@ async function denyBooking(data) {
 module.exports = {
     registerNewUser: registerNewUser,
     changeUserStatus: changeUserStatus,
+    removeUser: removeUser,
+    denyUserAccount: denyUserAccount,
     getLoginDetails: getLoginDetails,
     getEquipmentData: getEquipmentData,
     addNewEquipment: addNewEquipment,
     updateEquipment: updateEquipment,
+    removeEquipment: removeEquipment,
     getBookings: getBookings,
     getAllBookings: getAllBookings,
     bookEquipment: bookEquipment,

@@ -16,6 +16,7 @@ const errors = require('../config/errors.json');
 async function getEquipmentData() {
     const data = await dbComms.getEquipmentData();
 
+    //  TODO: update these ststus codes
     for (const row of data) {
         switch (row.status) {
         case 1:
@@ -91,8 +92,31 @@ async function updateEquipment(formData) {
     }
 }
 
+/**
+ * Takes data from the form and marks the equipment with barcode as deleted in the database
+ *
+ * @async
+ *
+ * @param {formData} formData - contains the barcode of the equipment
+ */
+async function removeEquipment(formData) {
+    const data = [
+        formData.barcode,
+    ];
+
+    const message = await dbComms.removeEquipment(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'data': message,
+        };
+    }
+}
 module.exports = {
     getEquipmentData: getEquipmentData,
     addNewEquipment: addNewEquipment,
     updateEquipment: updateEquipment,
+    removeEquipment: removeEquipment,
 };

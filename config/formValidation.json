@@ -16,6 +16,10 @@
         "borrowTime"
     ],
 
+    "equipmentRemoval": [
+        "barcode"
+    ],
+
     "bookingReg": [
         "barcode"
     ],
