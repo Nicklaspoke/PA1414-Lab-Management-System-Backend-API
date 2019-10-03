@@ -111,8 +111,44 @@ async function denyBooking(bookingId) {
  * @param {int} bookingId
  */
 async function checkOutEquipment(token, bookingId) {
+    const data = [
+        bookingId,
+        token.sub,
+    ];
 
+    const message = await dbComms.checkOutEquipment(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'data': message,
+        };
+    }
 }
+
+/**
+ *
+ * @param {JSON} token - JWT token
+ * @param {*} bookingId - the booking id for the booking to return
+ */
+async function returnEquipment(token, bookingId) {
+    const data = [
+        bookingId,
+        token.sub,
+    ];
+
+    const message = await dbComms.returnEquipment(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'data': message,
+        };
+    }
+}
+
 module.exports = {
     getBookedEquipment: getBookedEquipment,
     bookEquipment: bookEquipment,
@@ -120,4 +156,5 @@ module.exports = {
     approveBooking: approveBooking,
     denyBooking: denyBooking,
     checkOutEquipment: checkOutEquipment,
+    returnEquipment: returnEquipment,
 };

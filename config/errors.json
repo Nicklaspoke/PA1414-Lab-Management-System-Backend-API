@@ -58,6 +58,27 @@
         }
     },
 
+    "bookingCheckoutError": {
+        "errors": {
+            "title": "Checkout Error",
+            "details": "Can't check out equipment that isn't approved or returned"
+        }
+    },
+
+    "bookingReturnError": {
+        "errors": {
+            "title": "Return Error",
+            "details": "Can't return something that is returned or not checked out"
+        }
+    },
+
+    "bookingUserIdError": {
+        "errors": {
+            "title": "Booking User Id error",
+            "details": "User with that id has not made that booking"
+        }
+    },
+
     "approvalError": {
         "errors": {
             "title": "Can't approve booking",

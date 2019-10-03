@@ -21,7 +21,7 @@ const errors = require('../config/errors.json');
  */
 async function login(formData) {
     const res = await dbComms.getLoginDetails(formData.userId);
-    console.log(res);
+
     if (res[0] === undefined) {
         return errors.invalidLoginError;
     } else if (res[0].message) {

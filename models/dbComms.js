@@ -228,6 +228,36 @@ async function denyBooking(data) {
     return (res[0][0].message);
 }
 
+/**
+ * Calls the procedure for chekcing out booked equipment
+ *
+ * @async
+ *
+ * @param {list} data - contains data for the procedure
+ */
+async function checkOutEquipment(data) {
+    sql = 'CALL check_out_equipment(?, ?)';
+
+    const res = await db.query(sql, data);
+
+    return res[0][0].message;
+}
+
+/**
+ *Calls the procedure for returning equipment
+ *
+ * @async
+ *
+ * @param {list} data - contains data for the procedure
+ */
+async function returnEquipment(data) {
+    sql = 'CALL return_equipment(?, ?)';
+
+    const res = await db.query(sql, data);
+
+    return res[0][0].message;
+}
+
 module.exports = {
     registerNewUser: registerNewUser,
     changeUserStatus: changeUserStatus,
@@ -243,4 +273,6 @@ module.exports = {
     bookEquipment: bookEquipment,
     approveBooking: approveBooking,
     denyBooking: denyBooking,
+    checkOutEquipment: checkOutEquipment,
+    returnEquipment: returnEquipment,
 };
