@@ -122,7 +122,7 @@ async function checkOutEquipment(token, bookingId) {
         return errors[message];
     } else {
         return {
-            'data': message,
+            'status': message,
         };
     }
 }
@@ -144,7 +144,7 @@ async function returnEquipment(token, bookingId) {
         return errors[message];
     } else {
         return {
-            'data': message,
+            'status': message,
         };
     }
 }

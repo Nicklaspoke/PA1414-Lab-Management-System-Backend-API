@@ -1,4 +1,5 @@
-<h2 id="JWTDoc">Possible errors with JWT</h2>
+<h1 id="JWTDoc">Possible errors with JWT</h1>
+<section>
 <p class="center">
 All requests with a POST, PUT or DELETE call must be sent with the recived JWT token
 in the header as an <b>'x-access-token'</b>
@@ -6,7 +7,7 @@ in the header as an <b>'x-access-token'</b>
 
 <p class="center">If not, one of the following errors can be retuned</p>
 
-<h3>No token in header</h3>
+<h2>No token in header</h2>
 <p class="center">This happens then JWT token has not been provided in the header or provided but with wrong name</p>
 <div class="codeBlock">
 <code>
@@ -21,7 +22,7 @@ in the header as an <b>'x-access-token'</b>
 </code>
 </div>
 
-<h3>Invalid Token</h3>
+<h2>Invalid Token</h2>
 <p class="center">This happens then the token provided has an invalid signatue</p>
 <div class="codeBlock">
 <code>
@@ -36,7 +37,7 @@ in the header as an <b>'x-access-token'</b>
 </code>
 </div>
 
-<h3>Token Expirered</h3>
+<h2>Token Expirered</h2>
 <p class="center">This happens then the token provided has expired and then the user needs to login/authenticate again</p>
 <div class="codeBlock">
 <code>
@@ -50,3 +51,4 @@ in the header as an <b>'x-access-token'</b>
     }</pre>
 </code>
 </div>
+</section>

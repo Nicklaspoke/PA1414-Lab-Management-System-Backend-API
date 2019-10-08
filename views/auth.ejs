@@ -1,9 +1,10 @@
-<h2 id="authDoc">Auth/Authentication</h2>
+<h1 id="authDoc">Auth/Authentication</h1>
+<section>
 <p>The supported methods for Authentication is POST requests</p>
 <div class="codeBlock">
 <code>
     <pre>
-POST /login</pre>
+    POST /login</pre>
 </code>
 </div>
 
@@ -14,9 +15,9 @@ POST /login</pre>
 <li>password</li>
 </ul>
 
-<h3>Possible errors</h3>
+<h2>Possible errors</h2>
 
-<h4>Wrong credentials (invalid userId or password)</h4>
+<h3>Wrong credentials (invalid userId or password)</h3>
 <div class="codeBlock">
 <code>
     <pre>
@@ -29,7 +30,7 @@ POST /login</pre>
 </code>
 </div>
 
-    <h4>Account not approved by admin</h4>
+    <h3>Account not approved by admin</h3>
         <div class="codeBlock">
             <code>
     <pre>
@@ -43,7 +44,7 @@ POST /login</pre>
             </code>
         </div>
 
-    <h4>Account deactivated/removed</h4>
+    <h3>Account deactivated/removed</h3>
     <div class="codeBlock">
     <code>
     <pre>
@@ -57,7 +58,7 @@ POST /login</pre>
     }</pre>
     </code>
     </div>
-    <h3>Successful Login</h3>
+    <h2>Successful Login</h2>
         <div class="codeBlock">
 <code>
     <pre>
@@ -76,3 +77,4 @@ POST /login</pre>
 
         <p class="center">Note, Token that is returned is a JWT Token. It will be needed for all user authentication in the system</p>
         <p class="center">The JWT Token is valid for 12 Hours</p>
+</section>

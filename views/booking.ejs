@@ -1,0 +1,261 @@
+<h1>Booking</h1>
+<section>
+<h2>Get user bookings</h2>
+
+<p class="center">Gets the bookings for the user (userId is contained in the JWT token)</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    GET /booking</pre>
+    </code>
+</div>
+
+<p class="center">Note: JWT Token must be included in header. For access of the holders userId</p>
+
+<h3>Return on sucess</h3>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    [
+        {
+            "id": 1,
+            "status": 1,
+            "booking_time": "2019-10-08T13:55:35.000Z",
+            "checkout_time": null,
+            "return_time": null
+        }
+    ]</pre>
+    </code>
+</div>
+
+<h2>Get all user bookings</h2>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    GET /booking/all</pre>
+    </code>
+</div>
+
+<p class="center">Let's the admin see all user bookings</p>
+<p class="center">Note: needs  JWT token with admin rights in the header</p>
+
+<h3>Return on sucess</h3>
+<div class="codeBlock">
+    <code>
+    <pre>
+    [
+        {
+            "id": 1,
+            "user_id": "niko15",
+            "barcode": "test003",
+            "status": 1,
+            "booking_time": "2019-10-08T13:59:18.000Z",
+            "checkout_time": null,
+            "return_time": null,
+            "deleted": null
+        },
+        {
+            "id": 2,
+            "user_id": "niko14",
+            "barcode": "test002",
+            "status": 1,
+            "booking_time": "2019-10-08T13:59:32.000Z",
+            "checkout_time": null,
+            "return_time": null,
+            "deleted": null
+        }
+    ]</pre>
+    </code>
+</div>
+
+<h2>Book equipment</h2>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    POST /booking</pre>
+    </code>
+</div>
+
+<p>Requiered parameters</p>
+
+<ul>
+    <li>barcode</li>
+</ul>
+
+<h3>Return on sucess</h3>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "data": {
+            "message": "Booking succesfull, awaiting aproval form admin"
+        }
+    }</pre>
+    </code>
+</div>
+
+<h3>Possible Errors</h3>
+
+<p class="center">Equipment already booked</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "booking error",
+            "details": "Equipment is already booked"
+        }
+    }</pre>
+    </code>
+</div>
+
+<p class="center">Invalid barcode</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Barcode error",
+            "details": "Invalid barcode"
+        }
+    }</pre>
+    </code>
+    </div>
+
+    <p class="center">Invalid user</p>
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Invalid User",
+            "details": "User not registered in the system"
+        }
+    }</pre>
+    </code>
+</div>
+
+<h2>Approve or deny a booking</h2>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    PUT /booking/approve
+    PUT /booking/deny</pre>
+    </code>
+</div>
+
+<p>Requiered parameters</p>
+
+<ul>
+    <li>bookingId</li>
+</ul>
+
+<h3>Possible errors</h3>
+
+<p class="center">Invalid booking id</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Booking id error",
+            "details": "Booking id dosen't exists"
+        }
+    }</pre>
+    </code>
+</div>
+
+<p class="center">Booking can't or dosen't need approval</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Can't approve booking",
+            "details": "Can't approve a booking that is either already
+            approved, checked out or returned"
+        }
+    }</pre>
+    </code>
+</div>
+
+<p class="center">Trying to deny a approved booking</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Can't deny booking",
+            "details": "Can't deny a booking that is already
+            approved, checked out or returned"
+        }
+    }</pre>
+    </code>
+</div>
+
+<h2>Checkout and Return Equipment</h2>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    PUT /booking/checkout
+    PUT /booking/return</pre>
+    </code>
+</div>
+
+<p>Requiered parameters</p>
+
+<ul>
+    <li>JWT token with the userId</li>
+    <li>bookingId</li>
+</ul>
+
+<h3>Return on sucess</h3>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "status": "200 Ok"
+    }</pre>
+    </code>
+</div>
+
+<h3>Possible Errors</h3>
+
+<p class="center">Equipment is already return or hasn't been approved by admin</p>
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Checkout Error",
+            "details": "Can't check out equipment that isn't approved or returned"
+        }
+    }</pre>
+    </code>
+</div>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Return Error",
+            "details": "Can't return something that is returned or not checked out"
+        }
+    }</pre>
+    </code>
+</div>
+</section>

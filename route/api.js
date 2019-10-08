@@ -211,7 +211,7 @@ router.get('/booking/all', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     if (token.errors) {
         res.json(token);
-    } else if (token.admin) {
+    } else if (!token.admin) {
         res.json(errors.unauthorizedUserError);
     } else {
         res.json(await booking.getAllBookings());
@@ -238,7 +238,7 @@ router.put('/booking/approve', urlencodedparser, async (req, res) => {
     } else if (!token.admin) {
         res.json(errors.unauthorizedUserError);
     } else {
-        res.json(await booking.changeBookingStatus(req.body.bookingId, 2));
+        res.json(await booking.approveBooking(req.body.bookingId, 2));
     }
 });
 
@@ -257,7 +257,7 @@ router.put('/booking/deny', urlencodedparser, async (req, res) => {
 
 router.put('/booking/checkout', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
-    const validation = utils.validateFormData(req.body, 'bookingReg');
+    const validation = utils.validateFormData(req.body, 'booking');
 
     if (token.errors) {
         res.json(token.errors);
@@ -270,7 +270,7 @@ router.put('/booking/checkout', urlencodedparser, async (req, res) => {
 
 router.put('/booking/return', urlencodedparser, async (req, res) => {
     const token = await auth.validateHeader(req.headers);
-    const validation = utils.validateFormData(req.body, 'bookingReg');
+    const validation = utils.validateFormData(req.body, 'booking');
 
     if (token.errors) {
         res.json(token.errors);
