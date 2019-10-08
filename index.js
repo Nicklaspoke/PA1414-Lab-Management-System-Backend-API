@@ -20,7 +20,7 @@ const server = express();
 server.set('view engine', 'ejs');
 server.use('/', apiRouter);
 server.use(express.static(path.join(__dirname, 'public')));
-server.use('cors');
+server.use(cors());
 server.listen(port, () => {
     console.log(`Server listening at ${port}`);
 });
