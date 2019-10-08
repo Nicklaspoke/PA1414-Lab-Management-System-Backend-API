@@ -1,0 +1,35 @@
+body {
+    overflow-y: scroll;
+    background-color: #8b5b8c;
+}
+
+.mainContainer {
+    background-color: #eee;
+    margin: 1em auto;
+    text-align: left;
+    width: 50%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    text-align: center;
+}
+
+section {
+    margin: 1em 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #333;
+}
+
+.codeBlock {
+    border: 1px solid #333;
+    width: 80%;
+    margin: auto;
+    background-color: aqua;
+}
+
+.center {
+    text-align: center;
+}

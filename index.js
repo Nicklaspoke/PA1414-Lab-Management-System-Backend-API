@@ -9,6 +9,7 @@
 const express = require('express');
 const setup = require('./config/config.json');
 const apiRouter = require('./route/api.js');
+const path = require('path');
 
 //  Define server variable and port
 const port = setup.port;
@@ -17,6 +18,7 @@ const server = express();
 //  Set up and start the server
 server.set('view engine', 'ejs');
 server.use('/', apiRouter);
+server.use(express.static(path.join(__dirname, 'public')));
 server.listen(port, () => {
     console.log(`Server listening at ${port}`);
 });
