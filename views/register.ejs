@@ -1,0 +1,99 @@
+<h2 id="registerDoc">Register</h2>
+
+<h3>Register an account</h3>
+<div class="codeBlock">
+    <code>
+    <pre>
+    POST /register/student</pre>
+    </code>
+</div>
+
+<p>Required parameters</p>
+<ul>
+<li>userId</li>
+<li>email</li>
+<li>password</li>
+</ul>
+
+<h3>Return</h3>
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "data": "Account registered sucessfully"
+    }</pre>
+</code>
+</div>
+<p class="center">Note: This above call does not require a header token</p>
+<div class="codeBlock">
+    <code>
+        <pre>
+    POST /register/user</pre>
+    </code>
+</div>
+
+<h3>Return</h3>
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "data": "Account registered sucessfully"
+    }</pre>
+</code>
+</div>
+<p class="center">Note: This call (POST /register/user) is admin version of registering a user.
+And therefore will bypass the approval process for a new user. Optional parameter that can be sent in this call is role.
+Note: role needs to be an int. Roles are defined by the following:
+</p>
+
+<ol>
+<li>Admin</li>
+<li>Teachers</li>
+<li>Student</li>
+<li>Avaiting account approval</li>
+</ol>
+
+<h3>Approval, denying and removal/deactivating of accounts</h3>
+<div class="codeBlock">
+<code>
+    <pre>
+    PUT /register/approve
+    DELETE /register/deny
+    DELETE /register</pre>
+</code>
+</div>
+
+<p class="center">Note: An removal (DELETE /register) will only perform a soft delete of the user.
+    But a deny (DELETE /register/deny) will remove that account from the database
+</p>
+<p>Required parameters</p>
+<ul>
+    <li>userId</li>
+</ul>
+<h3>Possible errors from the call</h3>
+
+<h4>User ID does not exists</h4>
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "errors": {
+            "title": "No user id error",
+            "detail": "No user with that id is registered"
+        }
+    }</pre>
+</code>
+</div>
+
+<h4>User is already approved</h4>
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "User status error",
+            "detail": "Can't deny or approve an account for a user that i already approved"
+        }
+    }</pre>
+    </code>
+</div>

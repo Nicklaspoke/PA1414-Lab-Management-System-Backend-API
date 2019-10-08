@@ -1,0 +1,31 @@
+<h2 id="globalErrorsDoc">Errors that can occur on all calls</h2>
+<h3>Invalid Form Data (not all required fields sent)</h3>
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Invalid form data",
+            "detail": "Invalid form data, see documentaion for correct values"
+        }
+    }</pre>
+    </code>
+</div>
+
+<h3>Not authorized user</h3>
+<p class="center">This error can occur then you try to perform a call that
+your account does not have the right privileges to do
+</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "status": 401,
+            "title": "Unauthorized User",
+            "details": "Only users with admin credentials can use this route"
+        }
+    }</pre>
+    </code>
+</div>

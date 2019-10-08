@@ -89,7 +89,7 @@ router.put('/register/approve', urlencodedparser, async (req, res) => {
     } else if (validation.errors) {
         res.json(validation);
     } else {
-        res.json(await register.changeUserStatus(req.body));
+        res.json(await register.approveUser(req.body));
     }
 });
 

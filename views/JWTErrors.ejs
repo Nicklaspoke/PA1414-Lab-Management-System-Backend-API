@@ -1,0 +1,52 @@
+<h2 id="JWTDoc">Possible errors with JWT</h2>
+<p class="center">
+All requests with a POST, PUT or DELETE call must be sent with the recived JWT token
+in the header as an <b>'x-access-token'</b>
+</p>
+
+<p class="center">If not, one of the following errors can be retuned</p>
+
+<h3>No token in header</h3>
+<p class="center">This happens then JWT token has not been provided in the header or provided but with wrong name</p>
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "errors": {
+            "status": 401,
+            "title": "No token",
+            "details": "No access token provided in header"
+        }
+    }</pre>
+</code>
+</div>
+
+<h3>Invalid Token</h3>
+<p class="center">This happens then the token provided has an invalid signatue</p>
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "errors": {
+            "status": 401,
+            "title": "JsonWebTokenError",
+            "detail": "invalid signature"
+        }
+    }</pre>
+</code>
+</div>
+
+<h3>Token Expirered</h3>
+<p class="center">This happens then the token provided has expired and then the user needs to login/authenticate again</p>
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "errors": {
+            "status": 401,
+            "title": "TokenExpiredError",
+            "detail": "jwt expired"
+        }
+    }</pre>
+</code>
+</div>

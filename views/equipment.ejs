@@ -1,0 +1,154 @@
+<h2>Equipment</h2>
+
+<h3>Get all equipment</h3>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    GET /equipment</pre>
+    </code>
+</div>
+
+<h4>Return on sucess</h4>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "data": [
+            {
+                "barcode": "test001",
+                "name": "HTC VIVE PRO",
+                "borrow_time": 1,
+                "status": "Booked"
+            },
+            {
+                "barcode": "test002",
+                "name": "Lego truck",
+                "borrow_time": 5,
+                "status": "Available"
+            },
+            {
+                "barcode": "test003",
+                "name": "Parot Drone",
+                "borrow_time": 2,
+                "status": "Available"
+            }
+        ]
+    }</pre>
+    </code>
+</div>
+<h3>Add new eqipment</h3>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    POST /equipment</pre>
+    </code>
+</div>
+<p>Requiered parameters</p>
+
+<ul>
+    <li>barcode</li>
+    <li>name</li>
+    <li>borrowTime</li>
+</ul>
+
+<h4>Return on sucess</h4>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "data": [
+            {
+                "message": "Equipment sucessfully added"
+            }
+        ]
+    }</pre>
+    </code>
+</div>
+
+<h4>Possible Errors</h4>
+
+<p class="center">Barcode already exists</p>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Barcode Registration error",
+            "details": "That barcode alreay exists"
+        }
+    }</pre>
+    </code>
+</div>
+
+<h3>Modify Equipment</h3>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    PUT /equipment</pre>
+    </code>
+</div>
+
+<p>Requiered parameters</p>
+
+<ul>
+    <li>barcode</li>
+    <li>name</li>
+    <li>borrowTime</li>
+</ul>
+
+<p class="center">Note: All fields in the database will be updated with the new information, except the barcode</p>
+
+<h4>Possible Errors</h4>
+
+<p class="center">Barcode does not exist</p>
+
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "errors": {
+            "title": "Barcode error",
+            "details": "Invalid barcode"
+        }
+    }</pre>
+</code>
+</div>
+
+<h4>Remove Equipment</h4>
+
+<div class="codeBlock">
+    <code>
+    <pre>
+    DELETE /equipment</pre>
+    </code>
+</div>
+
+<p>Requiered parameters</p>
+
+<ul>
+    <li>barcode</li>
+    <li>name</li>
+    <li>borrowTime</li>
+</ul>
+
+<h4>Possible Errors</h4>
+
+<p class="center">Barcode does not exist</p>
+
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "errors": {
+            "title": "Barcode error",
+            "details": "Invalid barcode"
+        }
+    }</pre>
+</code>
+</div>

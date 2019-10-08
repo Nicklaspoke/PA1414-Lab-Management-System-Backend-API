@@ -43,7 +43,7 @@ async function registerStudent(formData) {
 }
 
 /**
- * Approves the registration of a user account
+ * Changes the role of a user account
  *
  * @async
  *
@@ -56,6 +56,27 @@ async function changeUserStatus(formData) {
     ];
 
     const message = await dbComms.changeUserStatus(data);
+
+    if (message.includes('Error')) {
+        return errors[message];
+    } else {
+        return {
+            'status': '200 Ok',
+        };
+    }
+}
+
+/**
+ *  Approves the user account
+ * @param {formData} formData
+ */
+async function approveUser(formData) {
+    const data = [
+        formData.userId,
+        formData.role != undefined ? formData.role : 3,
+    ];
+
+    const message = await dbComms.approveUser(data);
 
     if (message.includes('Error')) {
         return errors[message];
@@ -142,6 +163,7 @@ module.exports = {
     registerStudent: registerStudent,
     registerUser: registerUser,
     changeUserStatus: changeUserStatus,
+    approveUser: approveUser,
     removeUser: removeUser,
     denyUser: denyUser,
 };

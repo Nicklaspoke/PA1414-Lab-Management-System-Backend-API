@@ -57,6 +57,18 @@ async function changeUserStatus(data) {
 }
 
 /**
+ *
+ * @param {list} data - list conatingin data for the procedure
+ */
+async function approveUser(data) {
+    sql = 'CALL approve_user(?, ?)';
+
+    res = await db.query(sql, data);
+
+    return res[0][0].message;
+}
+
+/**
  * Makrs a user as deleted/removed in the database
  *
  * @async
@@ -261,6 +273,7 @@ async function returnEquipment(data) {
 module.exports = {
     registerNewUser: registerNewUser,
     changeUserStatus: changeUserStatus,
+    approveUser: approveUser,
     removeUser: removeUser,
     denyUserAccount: denyUserAccount,
     getLoginDetails: getLoginDetails,

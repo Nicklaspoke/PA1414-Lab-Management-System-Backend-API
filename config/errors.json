@@ -11,7 +11,7 @@
         "errors": {
             "status": 401,
             "title": "Unauthorized User",
-            "details": "Only users with admins can use this route"
+            "details": "Only users with admin credentials can use this route"
         }
     },
 
@@ -123,7 +123,7 @@
     "userStatusError": {
         "errors": {
             "title": "User status error",
-            "detail": "Can't deny account for a user that i already approved"
+            "detail": "Can't deny or approve an account for a user that i already approved"
         }
     },
 

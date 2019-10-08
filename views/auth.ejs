@@ -1,0 +1,78 @@
+<h2 id="authDoc">Auth/Authentication</h2>
+<p>The supported methods for Authentication is POST requests</p>
+<div class="codeBlock">
+<code>
+    <pre>
+POST /login</pre>
+</code>
+</div>
+
+<p>Requried paramters are</p>
+
+<ul>
+<li>userId (the id you used to register your account)</li>
+<li>password</li>
+</ul>
+
+<h3>Possible errors</h3>
+
+<h4>Wrong credentials (invalid userId or password)</h4>
+<div class="codeBlock">
+<code>
+    <pre>
+    {
+        "errors": {
+            "title": "Account error",
+            "detail": "Account has not been approved by admin"
+        }
+    }</pre>
+</code>
+</div>
+
+    <h4>Account not approved by admin</h4>
+        <div class="codeBlock">
+            <code>
+    <pre>
+    {
+        "errors": {
+            "status": 401,
+            "title": "Invalid Credetials",
+            "details": "Invalid password or user Id"
+        }
+    }</pre>
+            </code>
+        </div>
+
+    <h4>Account deactivated/removed</h4>
+    <div class="codeBlock">
+    <code>
+    <pre>
+    {
+        "errors": {
+            "title": "Account removed error",
+            "detail": "This account has been removed from
+            active accounts, if you belive this was a misstake.
+            Contact admin for restoration of the account"
+        }
+    }</pre>
+    </code>
+    </div>
+    <h3>Successful Login</h3>
+        <div class="codeBlock">
+<code>
+    <pre>
+    {
+        "data": {
+            "type": "success",
+            "message": "User logged in",
+            "user": {
+                "userId": "niko14"
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ey..."
+        }
+    }</pre>
+            </code>
+        </div>
+
+        <p class="center">Note, Token that is returned is a JWT Token. It will be needed for all user authentication in the system</p>
+        <p class="center">The JWT Token is valid for 12 Hours</p>
