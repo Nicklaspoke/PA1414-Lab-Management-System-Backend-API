@@ -21,6 +21,7 @@ const server = express();
 
 //  Set up and start the server
 server.use(cors(corsOptions));
+app.options('*', cors());
 server.set('view engine', 'ejs');
 server.use('/', apiRouter);
 server.use(express.static(path.join(__dirname, 'public')));
