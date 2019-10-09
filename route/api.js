@@ -20,8 +20,9 @@ const errors = require('../config/errors.json');
 //  Define router and urlencodedparser
 // eslint-disable-next-line new-cap
 const router = express.Router();
-const urlencodedparser = bodyparser.urlencoded({extended: false});
-
+// const urlencodedparser = bodyparser.urlencoded({extended: true});
+router.use(bodyparser.json()); // support json encoded bodies
+router.use(bodyparser.urlencoded({extended: true})); // support encoded bodies
 //  Handle the different routes
 router.get('/', (req, res) => {
     const data = {
@@ -42,7 +43,7 @@ router.get('/test', (req, res) => {
  * Handles the creation of a new student in the system
  * @param [urlencodedparser] - Object containing form data.
  */
-router.post('/register/student', urlencodedparser, async (req, res) => {
+router.post('/register/student', async (req, res) => {
     const validation = utils.validateFormData(req.body, 'userRegistration');
 
     if (validation.errors) {
@@ -62,7 +63,7 @@ router.post('/register/student', urlencodedparser, async (req, res) => {
  *
  * @param {urlencodedparser} urlencodedparser - Object containing form data
  */
-router.post('/register/user', urlencodedparser, async (req, res) => {
+router.post('/register/user', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'userRegistration');
 
@@ -78,7 +79,7 @@ router.post('/register/user', urlencodedparser, async (req, res) => {
 });
 
 //  Route for admin to approve a registered teacher/student account
-router.put('/register/approve', urlencodedparser, async (req, res) => {
+router.put('/register/approve', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'userApprove');
 
@@ -94,7 +95,7 @@ router.put('/register/approve', urlencodedparser, async (req, res) => {
 });
 
 //  Route for admin to approve a registered teacher/student account
-router.delete('/register/deny', urlencodedparser, async (req, res) => {
+router.delete('/register/deny', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'userApprove');
 
@@ -109,7 +110,7 @@ router.delete('/register/deny', urlencodedparser, async (req, res) => {
     }
 });
 
-router.delete('/register', urlencodedparser, async (req, res) => {
+router.delete('/register', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'userApprove');
 
@@ -123,7 +124,7 @@ router.delete('/register', urlencodedparser, async (req, res) => {
         res.json(await register.removeUser(req.body.userId));
     }
 })
-router.post('/login', urlencodedparser, async (req, res) => {
+router.post('/login', async (req, res) => {
     const validation = utils.validateFormData(req.body, 'login');
 
     if (validation.errors) {
@@ -148,7 +149,7 @@ router.get('/equipment', async (req, res) => {
 });
 
 //  Route for adding new equipment into the database
-router.post('/equipment', urlencodedparser, async (req, res) => {
+router.post('/equipment', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'equipmentRegistraion');
 
@@ -164,7 +165,7 @@ router.post('/equipment', urlencodedparser, async (req, res) => {
     }
 });
 
-router.put('/equipment', urlencodedparser, async (req, res) => {
+router.put('/equipment', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'equipmentRegistraion');
 
@@ -179,7 +180,7 @@ router.put('/equipment', urlencodedparser, async (req, res) => {
     }
 });
 
-router.delete('/equipment', urlencodedparser, async (req, res) => {
+router.delete('/equipment', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'equipmentRemoval');
 
@@ -219,7 +220,7 @@ router.get('/booking/all', async (req, res) => {
 });
 
 //  Creates a booking for a user
-router.post('/booking', urlencodedparser, async (req, res) => {
+router.post('/booking', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
@@ -230,7 +231,7 @@ router.post('/booking', urlencodedparser, async (req, res) => {
 });
 
 //  Approves booking for a user
-router.put('/booking/approve', urlencodedparser, async (req, res) => {
+router.put('/booking/approve', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
@@ -243,7 +244,7 @@ router.put('/booking/approve', urlencodedparser, async (req, res) => {
 });
 
 //  Denies a booking for a user
-router.put('/booking/deny', urlencodedparser, async (req, res) => {
+router.put('/booking/deny', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
 
     if (token.errors) {
@@ -255,7 +256,7 @@ router.put('/booking/deny', urlencodedparser, async (req, res) => {
     }
 });
 
-router.put('/booking/checkout', urlencodedparser, async (req, res) => {
+router.put('/booking/checkout', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'booking');
 
@@ -268,7 +269,7 @@ router.put('/booking/checkout', urlencodedparser, async (req, res) => {
     }
 });
 
-router.put('/booking/return', urlencodedparser, async (req, res) => {
+router.put('/booking/return', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
     const validation = utils.validateFormData(req.body, 'booking');
 
