@@ -13,7 +13,7 @@ const path = require('path');
 const cors = require('cors');
 const corsOptions = {
     origin: '*',
-}
+};
 
 //  Define server variable and port
 const port = setup.port;

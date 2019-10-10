@@ -36,7 +36,7 @@ async function getBookedEquipment(token) {
  * @async
  */
 async function getAllBookings() {
-    const res = await dbComms.getAllBookings()
+    const res = await dbComms.getAllBookings();
 
     return res;
 }

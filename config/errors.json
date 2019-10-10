@@ -102,42 +102,42 @@
     "emailRegError": {
         "errors": {
             "title": "Email error",
-            "detail": "User with that email already registered"
+            "details": "User with that email already registered"
         }
     },
 
     "accountNotApprovedError": {
         "errors": {
             "title": "Account error",
-            "detail": "Account has not been approved by admin"
+            "details": "Account has not been approved by admin"
         }
     },
 
     "noUserIdError": {
         "errors": {
             "title": "No user id error",
-            "detail": "No user with that id is registered"
+            "details": "No user with that id is registered"
         }
     },
 
     "userStatusError": {
         "errors": {
             "title": "User status error",
-            "detail": "Can't deny or approve an account for a user that i already approved"
+            "details": "Can't deny or approve an account for a user that i already approved"
         }
     },
 
     "invalidFormError": {
         "errors": {
             "title": "Invalid form data",
-            "detail": "Invalid form data, see documentaion for correct values"
+            "details": "Invalid form data, see documentaion for correct values"
         }
     },
 
     "userRemovedError": {
         "errors": {
             "title": "Account removed error",
-            "detail": "This account has been removed from active accounts, if you belive this was a misstake. Contact admin for restoration of the account"
+            "details": "This account has been removed from active accounts, if you belive this was a misstake. Contact admin for restoration of the account"
         }
     }
 }

@@ -93,7 +93,8 @@ async function updateEquipment(formData) {
 }
 
 /**
- * Takes data from the form and marks the equipment with barcode as deleted in the database
+ * Takes data from the form and marks the equipment with
+ * barcode as deleted in the database
  *
  * @async
  *

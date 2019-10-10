@@ -1,0 +1,4 @@
+{
+    "port": "Port you want the server to run on",
+    "jwtSecret": "Your own JWT secret"
+}

@@ -96,7 +96,7 @@ async function validateToken(token) {
                     'errors': {
                         'status': 401,
                         'title': err.name,
-                        'detail': err.message,
+                        'details': err.message,
                     },
                 };
             };

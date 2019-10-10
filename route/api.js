@@ -123,7 +123,8 @@ router.delete('/register', async (req, res) => {
     } else {
         res.json(await register.removeUser(req.body.userId));
     }
-})
+});
+
 router.post('/login', async (req, res) => {
     const validation = utils.validateFormData(req.body, 'login');
 
