@@ -48,7 +48,7 @@ async function registerNewUser(data) {
  * Gets all the userdata from the database
  */
 async function getAllusers() {
-    sql = `CALL getUserData`;
+    sql = `CALL get_user_data`;
 
     res = await db.query(sql);
 
