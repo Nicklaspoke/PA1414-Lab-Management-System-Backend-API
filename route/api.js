@@ -223,9 +223,12 @@ router.get('/booking/all', async (req, res) => {
 //  Creates a booking for a user
 router.post('/booking', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'bookingReg');
 
     if (token.errors) {
         res.json(token);
+    } else if (validation.errors) {
+        res.json(validation.errors);
     } else {
         res.json(await booking.bookEquipment(token, req.body));
     }
