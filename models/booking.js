@@ -52,6 +52,7 @@ async function bookEquipment(token, formData) {
     const data = [
         token.sub,
         formData.barcode,
+        formData.borrowTime,
     ];
 
     const message = await dbComms.bookEquipment(data);

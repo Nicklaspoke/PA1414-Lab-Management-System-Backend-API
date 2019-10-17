@@ -21,7 +21,8 @@
     ],
 
     "bookingReg": [
-        "barcode"
+        "barcode",
+        "borrowTime"
     ],
 
     "userApprove": [

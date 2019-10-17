@@ -203,7 +203,7 @@ async function getAllBookings() {
  * @param {list} data - contains the user_id and barcode
  */
 async function bookEquipment(data) {
-    sql = 'CALL book_equipment(?, ?)';
+    sql = 'CALL book_equipment(?, ?, ?)';
 
     res = await db.query(sql, data);
 
