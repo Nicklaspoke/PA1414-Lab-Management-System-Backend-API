@@ -45,6 +45,17 @@ async function registerNewUser(data) {
 }
 
 /**
+ * Gets all the userdata from the database
+ */
+async function getAllusers() {
+    sql = `CALL getUserData`;
+
+    res = await db.query(sql);
+
+    return res[0];
+}
+
+/**
  *
  * @param {list} data - list containing userId and new status
  */
@@ -273,6 +284,7 @@ async function returnEquipment(data) {
 module.exports = {
     registerNewUser: registerNewUser,
     changeUserStatus: changeUserStatus,
+    getAllusers: getAllusers,
     approveUser: approveUser,
     removeUser: removeUser,
     denyUserAccount: denyUserAccount,

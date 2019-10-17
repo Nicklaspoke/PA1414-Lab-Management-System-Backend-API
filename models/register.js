@@ -43,6 +43,17 @@ async function registerStudent(formData) {
 }
 
 /**
+ * Gets all the user data from the database
+ */
+async function getAllUsers() {
+    const message = await dbComms.getAllusers();
+
+    return {
+        'data': message,
+    };
+}
+
+/**
  * Changes the role of a user account
  *
  * @async

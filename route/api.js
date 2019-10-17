@@ -78,6 +78,22 @@ router.post('/register/user', async (req, res) => {
     }
 });
 
+/**
+ * Gets all user account info
+ * Needs Admin rights
+ */
+router.get('/register/user', async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+
+    if (token.errors) {
+        res.json(token);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else {
+        res.json(await register.getAllUsers());
+    }
+});
+
 //  Route for admin to approve a registered teacher/student account
 router.put('/register/approve', async (req, res) => {
     const token = await auth.validateHeader(req.headers);
