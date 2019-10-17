@@ -173,6 +173,7 @@ async function registerUser(formData) {
 module.exports = {
     registerStudent: registerStudent,
     registerUser: registerUser,
+    getAllUsers: getAllUsers,
     changeUserStatus: changeUserStatus,
     approveUser: approveUser,
     removeUser: removeUser,
