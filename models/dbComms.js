@@ -41,7 +41,7 @@ async function registerNewUser(data) {
 
     res = await db.query(sql, data);
 
-    return res[0];
+    return res[0][0].message;
 }
 
 /**
