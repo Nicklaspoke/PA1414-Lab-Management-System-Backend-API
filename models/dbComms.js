@@ -172,7 +172,7 @@ async function updateEquipment(data) {
  * @param {list} data - contains the data for the called procedure
  */
 async function removeEquipment(data) {
-    sql = 'CALL remove_eqiupment(?)';
+    sql = 'CALL remove_equipment(?)';
 
     const res = await db.query(sql, data);
 
