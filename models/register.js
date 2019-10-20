@@ -160,7 +160,7 @@ async function registerUser(formData) {
     ];
 
     const message = await dbComms.registerNewUser(data);
-    console.log(message);
+
     if (message.includes('Error')) {
         return errors[message];
     } else {
