@@ -16,29 +16,6 @@ const errors = require('../config/errors.json');
 async function getEquipmentData() {
     const data = await dbComms.getEquipmentData();
 
-    //  TODO: update these ststus codes
-    for (const row of data) {
-        switch (row.status) {
-        case 1:
-            row.status = 'Available';
-            break;
-
-        case 2:
-            row.status = 'Avaiting Aproval';
-            break;
-
-        case 3:
-            row.status = 'Booked';
-            break;
-        case 4:
-            row.status = 'Checked Out';
-            break;
-        case 5:
-            row.status = 'Not available';
-            break;
-        }
-    }
-
     return data;
 }
 

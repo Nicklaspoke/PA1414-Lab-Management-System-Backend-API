@@ -109,11 +109,11 @@ async function denyBooking(bookingId) {
 /**
  *
  * @param {JSON} token - JWT token containing the user data
- * @param {int} bookingId
+ * @param {int} barcode
  */
-async function checkOutEquipment(token, bookingId) {
+async function checkOutEquipment(token, barcode) {
     const data = [
-        bookingId,
+        barcode,
         token.sub,
     ];
 
@@ -131,11 +131,11 @@ async function checkOutEquipment(token, bookingId) {
 /**
  *
  * @param {JSON} token - JWT token
- * @param {*} bookingId - the booking id for the booking to return
+ * @param {*} barcode - the booking id for the booking to return
  */
-async function returnEquipment(token, bookingId) {
+async function returnEquipment(token, barcode) {
     const data = [
-        bookingId,
+        barcode,
         token.sub,
     ];
 

@@ -285,7 +285,7 @@ router.put('/booking/checkout', async (req, res) => {
     } else if (validation.errors) {
         res.json(validation);
     } else {
-        res.json(await booking.checkOutEquipment(token, req.body.bookingId));
+        res.json(await booking.checkOutEquipment(token, req.body.barcode));
     }
 });
 
@@ -298,7 +298,7 @@ router.put('/booking/return', async (req, res) => {
     } else if (validation.errors) {
         res.json(validation);
     } else {
-        res.json(await booking.checkOutEquipment(token, req.body.bookingId));
+        res.json(await booking.returnEquipment(token, req.body.barcode));
     }
 });
 module.exports = router;
