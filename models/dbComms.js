@@ -41,7 +41,7 @@ async function registerNewUser(data) {
 
     res = await db.query(sql, data);
 
-    return res[0][0].message;
+    return res[0];
 }
 
 /**
@@ -189,11 +189,7 @@ async function getBookings(data) {
 
     res = await db.query(sql, data);
 
-    if (res[0][0].message) {
-        return res[0][0].message;
-    } else {
-        return res[0];
-    }
+    return res[0];
 }
 
 /**
