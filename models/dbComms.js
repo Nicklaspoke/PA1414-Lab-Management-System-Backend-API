@@ -160,8 +160,11 @@ async function updateEquipment(data) {
     sql = 'CALL update_equipment(?, ?, ?)';
 
     const res = await db.query(sql, data);
-
-    return res[0][0].message;
+    if (res[0][0].message) {
+        return res[0][0].message;
+    } else {
+        return '200 Ok';
+    }
 }
 
 /**
