@@ -161,11 +161,7 @@ async function updateEquipment(data) {
 
     const res = await db.query(sql, data);
 
-    if (res[0][0] != undefined) {
-        return res[0][0].message;
-    } else {
-        return '200 Ok';
-    }
+    return res[0][0].message;
 }
 
 /**
