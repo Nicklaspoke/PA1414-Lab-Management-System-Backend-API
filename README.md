@@ -9,7 +9,7 @@ To run and set up this application. You will need the following prerequisites
 *  My [database setup](https://github.com/Nicklaspoke/PA1414-Lab-Management-System-Database-SQL)
 
 ## Install
-After downloading or cloning this repo. In the same folder as the `*Package.json` file run the following command `npm install` to install all the reqiured packages.
+After downloading or cloning this repo. In the same folder as the `Package.json` file run the following command `npm install` to install all the reqiured packages.
 
 ## Set up/configure
 
