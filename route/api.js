@@ -30,6 +30,8 @@ router.get('/', (req, res) => {
     };
 
     res.render('index', data);
+
+    // res.json('see documentation for valid routes');
 });
 
 /**
