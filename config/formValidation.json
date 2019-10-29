@@ -10,6 +10,11 @@
         "password"
     ],
 
+    "userStatusChange": [
+        "userId",
+        "role"
+    ],
+
     "equipmentRegistraion": [
         "barcode",
         "name",

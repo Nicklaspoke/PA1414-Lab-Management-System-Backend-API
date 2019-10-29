@@ -63,7 +63,7 @@ async function getAllUsers() {
 async function changeUserStatus(formData) {
     const data = [
         formData.userId,
-        formData.role != undefined ? formData.role : 3,
+        formData.role,
     ];
 
     const message = await dbComms.changeUserStatus(data);

@@ -78,6 +78,21 @@ router.post('/register/user', async (req, res) => {
     }
 });
 
+router.put('/register/edit', async (req, res) => {
+    const token = await auth.validateHeader(req.headers);
+    const validation = utils.validateFormData(req.body, 'userStatusChange');
+
+    if (token.errors) {
+        res.json(token);
+    } else if (!token.admin) {
+        res.json(errors.unauthorizedUser);
+    } else if (validation.errors) {
+        res.json(validation);
+    } else {
+        res.json(await register.changeUserStatus(req.body));
+    }
+});
+
 /**
  * Gets all user account info
  * Needs Admin rights
